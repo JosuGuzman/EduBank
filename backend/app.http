@@ -1,1 +1,5 @@
 GET http://localhost:3000/cuentas
+
+###
+
+GET http://localhost:3000/cuentas/detalle
