@@ -1,15 +1,42 @@
 import { z } from "zod";
 
 export const tipoCuentaSchema = z.object({
-  idTipoCuenta: z.number(),            // auto-incremental en la DB
-  nombre: z.string().min(1).max(50),
-  descripcion: z.string().max(200).optional(),
-  permiteCredito: z.boolean().default(false),
-  moneda: z.string().max(10).default("ARS"),
-  tasaInteres: z.number().nonnegative().default(0),
+	idTipoCuenta: z.number({
+		invalid_type_error: "El ID del tipo de cuenta debe ser un número",
+	}), // auto-incremental en la DB
+	nombre: z
+		.string({
+			required_error: "El nombre del tipo de cuenta es obligatorio",
+			invalid_type_error: "El nombre debe ser un texto",
+		})
+		.min(1, { message: "El nombre debe tener al menos 1 carácter" })
+		.max(50, { message: "El nombre no puede superar 50 caracteres" }),
+	descripcion: z
+		.string({
+			invalid_type_error: "La descripción debe ser un texto",
+		})
+		.max(200, { message: "La descripción no puede superar 200 caracteres" })
+		.optional(),
+	permiteCredito: z
+		.boolean({
+			invalid_type_error: "PermiteCredito debe ser true o false",
+		})
+		.default(false),
+	moneda: z
+		.string({
+			invalid_type_error: "La moneda debe ser un texto",
+		})
+		.max(10, { message: "La moneda no puede superar 10 caracteres" })
+		.default("ARS"),
+	tasaInteres: z
+		.number({
+			invalid_type_error: "La tasa de interés debe ser un número",
+		})
+		.nonnegative({ message: "La tasa de interés no puede ser negativa" })
+		.default(0),
 });
 
-export const TipoCuenta = tipoCuentaSchema;
 
+// Para crear un nuevo tipo de cuenta (sin id)
 export const crearTipoCuentaSchema = tipoCuentaSchema.omit({ idTipoCuenta: true });
 

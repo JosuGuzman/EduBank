@@ -143,7 +143,6 @@ VALUES (
 -- 6. TARJETA
 -- ========================================
 INSERT INTO Tarjeta (
-        IdUsuario,
         IdCuenta,
         NumeroTarjeta,
         FechaVencimiento,
@@ -153,7 +152,6 @@ INSERT INTO Tarjeta (
         SaldoDisponible
     )
 VALUES (
-        1,
         2,
         '4555555544443333',
         '2028-12-31',
@@ -163,7 +161,6 @@ VALUES (
         85000.00
     ),
     (
-        1,
         1,
         '4111111122223333',
         '2027-05-31',

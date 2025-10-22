@@ -91,18 +91,16 @@ CREATE TABLE Transaccion (
 -- ========================================
 CREATE TABLE Tarjeta (
     IdTarjeta INT AUTO_INCREMENT PRIMARY KEY,
-    IdUsuario INT NOT NULL,
     IdCuenta INT NOT NULL,
     NumeroTarjeta CHAR(16) UNIQUE NOT NULL,
     FechaVencimiento DATE NOT NULL,
     CVV CHAR(3) NOT NULL,
-    Tipo ENUM('debito','credito') NOT NULL,
-    LimiteCredito DECIMAL(18,2) DEFAULT 0.00,
-    SaldoDisponible DECIMAL(18,2) DEFAULT 0.00,
+    Tipo ENUM('debito', 'credito') NOT NULL,
+    LimiteCredito DECIMAL(18, 2) DEFAULT 0.00,
+    SaldoDisponible DECIMAL(18, 2) DEFAULT 0.00,
     Activa BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario),
     FOREIGN KEY (IdCuenta) REFERENCES Cuenta(IdCuenta)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- ========================================
 -- 7. PRESTAMO

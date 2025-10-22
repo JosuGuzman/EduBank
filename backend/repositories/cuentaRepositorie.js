@@ -9,8 +9,7 @@ export const cuentaRepositorie = {
 		const filas = await db("Cuenta as c")
 			.join("Usuario as u", "c.IdUsuario", "u.IdUsuario")
 			.join("TipoCuenta as t", "c.IdTipoCuenta", "t.IdTipoCuenta")
-			.join("Sucursal as sC", "c.IdSucursal", "sC.IdSucursal")
-			.join("Sucursal as sU", "u.IdSucursal", "sU.IdSucursal")
+			.join("Sucursal as s", "c.IdSucursal", "s.IdSucursal")
 			.select(
 				"c.IdCuenta",
 				"c.CBU",
@@ -25,27 +24,21 @@ export const cuentaRepositorie = {
 				"u.Rol",
 				"u.Activo",
 				"u.FechaAlta",
-				"sU.IdSucursal as UsuarioSucursalId",
-				"sU.Nombre as UsuarioSucursalNombre",
-				"sU.Ciudad as UsuarioSucursalCiudad",
-				"sU.Direccion as UsuarioSucursalDireccion",
-				"sU.Telefono as UsuarioSucursalTelefono",
-				"sU.Email as UsuarioSucursalEmail",
-				"sU.Estado as UsuarioSucursalEstado",
 				"t.IdTipoCuenta",
 				"t.Nombre as TipoCuentaNombre",
 				"t.Descripcion",
 				"t.PermiteCredito",
 				"t.Moneda",
 				"t.TasaInteres",
-				"sC.IdSucursal as CuentaSucursalId",
-				"sC.Nombre as CuentaSucursalNombre",
-				"sC.Ciudad as CuentaSucursalCiudad",
-				"sC.Direccion as CuentaSucursalDireccion",
-				"sC.Telefono as CuentaSucursalTelefono",
-				"sC.Email as CuentaSucursalEmail",
-				"sC.Estado as CuentaSucursalEstado"
+				"s.IdSucursal as SucursalId",
+				"s.Nombre as SucursalNombre",
+				"s.Ciudad as SucursalCiudad",
+				"s.Direccion as SucursalDireccion",
+				"s.Telefono as SucursalTelefono",
+				"s.Email as SucursalEmail",
+				"s.Estado as SucursalEstado"
 			);
+
 		return filas.map((f) =>
 			cuentaSchema.parse({
 				idCuenta: f.IdCuenta,
@@ -62,15 +55,6 @@ export const cuentaRepositorie = {
 					rol: f.Rol,
 					activo: Boolean(f.Activo),
 					fechaAlta: new Date(f.FechaAlta).toISOString(),
-					sucursal: {
-						idSucursal: f.UsuarioSucursalId,
-						nombre: f.UsuarioSucursalNombre,
-						ciudad: f.UsuarioSucursalCiudad,
-						direccion: f.UsuarioSucursalDireccion,
-						telefono: f.UsuarioSucursalTelefono,
-						email: f.UsuarioSucursalEmail,
-						estado: Boolean(f.UsuarioSucursalEstado),
-					},
 				},
 				tipoCuenta: {
 					idTipoCuenta: f.IdTipoCuenta,
@@ -81,18 +65,21 @@ export const cuentaRepositorie = {
 					tasaInteres: Number(f.TasaInteres),
 				},
 				sucursal: {
-					idSucursal: f.CuentaSucursalId,
-					nombre: f.CuentaSucursalNombre,
-					ciudad: f.CuentaSucursalCiudad,
-					direccion: f.CuentaSucursalDireccion,
-					telefono: f.CuentaSucursalTelefono,
-					email: f.CuentaSucursalEmail,
-					estado: Boolean(f.CuentaSucursalEstado),
+					idSucursal: f.SucursalId,
+					nombre: f.SucursalNombre,
+					ciudad: f.SucursalCiudad,
+					direccion: f.SucursalDireccion,
+					telefono: f.SucursalTelefono,
+					email: f.SucursalEmail,
+					estado: Boolean(f.SucursalEstado),
 				},
 			})
 		);
+
 	},
 };
+
+
 
 
 
