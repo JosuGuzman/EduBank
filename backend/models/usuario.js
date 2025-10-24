@@ -53,6 +53,7 @@ export const usuarioSchema = z.object({
 	sucursal: sucursalSchema.optional(),
 });
 
+
 // Para crear un usuario sin el id
 export const crearUsuarioSchema = usuarioSchema.omit({ idUsuario: true });
 
