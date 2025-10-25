@@ -6,3 +6,35 @@ GET http://localhost:3000/cuentas/detalle
 
 ###
 GET http://localhost:3000/sucursales
+
+
+
+###
+GET http://localhost:3000/sucursales/4
+
+
+
+###
+PUT http://localhost:3000/sucursales/4
+Content-Type: application/json
+
+{
+  "estado": false 
+}
+
+
+###
+POST http://localhost:3000/sucursales
+Content-Type: application/json
+
+{
+    "nombre": "hola",
+    "ciudad": "noway",
+    "direccion": "Av libre Impuestos 256",
+    "telefono": "12343542",
+    "email": "sucursal2@gmail.com",
+    "estado": true
+}
+
+###
+DELETE http://localhost:3000/sucursales/3

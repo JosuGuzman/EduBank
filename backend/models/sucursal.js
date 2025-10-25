@@ -38,3 +38,5 @@ export const sucursalSchema = z.object({
 // Para crear una sucursal nueva sin el id
 export const crearSucursalSchema = sucursalSchema.omit({ idSucursal: true });
 
+export const editarSucursalSchema = crearSucursalSchema
+	.partial()
