@@ -4,6 +4,8 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import cuentaRoutes from "./routes/cuentaRoutes.js";
+import sucursalRoutes from "./routes/sucursalesRoutes.js";
+
 
 dotenv.config();
 const app = express();
@@ -16,6 +18,7 @@ app.use(rateLimit({ windowMs: 60 * 1000, max: 100 }));
 
 // Rutas
 app.use("/cuentas", cuentaRoutes);
+app.use("/sucursales", sucursalRoutes)
 
 app.get("/", (req, res) => {
     res.send("Servidor bancario activo ✅");
