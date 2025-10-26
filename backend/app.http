@@ -4,7 +4,7 @@ GET http://localhost:3000/cuentas
 
 GET http://localhost:3000/cuentas/detalle
 
-###
+###Sucursales
 GET http://localhost:3000/sucursales
 
 
@@ -38,3 +38,36 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3000/sucursales/3
+
+###TipoCuentas
+
+GET http://localhost:3000/tiposCuentas
+
+
+###
+
+GET http://localhost:3000/tiposCuentas/2
+
+###
+POST http://localhost:3000/tiposCuentas
+Content-Type: application/json
+
+{
+  "Nombre": "Caja empresarial",
+  "Descripcion": "No hay intereses",
+  "PermiteCredito": true,
+  "Moneda": "ARS",
+  "TasaInteres": 0
+}
+
+###
+PUT http://localhost:3000/tiposCuentas/3
+Content-Type: application/json
+
+{
+  "Nombre": "Caja Sin interes"
+}
+
+###
+
+DELETE http://localhost:3000/tiposCuentas/3
