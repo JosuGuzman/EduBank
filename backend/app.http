@@ -76,3 +76,32 @@ DELETE http://localhost:3000/tiposCuentas/3
 ###Usuarios
 
 GET http://localhost:3000/usuarios
+
+###
+GET http://localhost:3000/usuarios/2
+
+###
+PUT http://localhost:3000/usuarios/2
+Content-Type: application/json
+
+{
+  "Nombre": "Calor"
+}
+
+###
+POST http://localhost:3000/usuarios
+Content-Type: application/json
+
+{
+  "Nombre": "Juan Gonzales",
+  "DNI": "4012326",
+  "Email": "juan.gonzales@gmail.com",
+  "Telefono": "011-1234-5678",
+  "Direccion": "Av. Siempre Viva 742",
+  "Rol": "cliente",
+  "FechaAlta": "2025-10-28T10:00:00.000Z",
+  "Activo": true,
+  "PasswordHash": "123",
+  "IdSucursal": 4
+}
+

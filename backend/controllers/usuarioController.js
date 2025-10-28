@@ -18,5 +18,32 @@ export const usuarioController = {
             res.status(500).json({ error: error.message });
         }
     },
+    crear: async(req,res) => {
+        try{
+            const nuevoUsuario = await usuarioRepository.crear(req.body);
+            res.status(201).json(nuevoUsuario);
+        }
+        catch(error){
+            res.status(500).json({ error: error.message });
+        }
+    },
+    put: async(req,res) =>{
+        try{
+            const id = req.params.id;
+            const usuario = await usuarioRepository.put(id,req.body);
+            res.json(usuario);
+        }
+        catch(error){
+            let errores = {};
+			try {
+				errores = JSON.parse(error.message); // si tu repositorie ya hace JSON.stringify de Zod
+			} catch {
+				errores.general = error.message;
+			}
+			res.status(400).json({
+				errores,
+			});
+        }
+    }
 };
 

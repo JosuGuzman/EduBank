@@ -36,8 +36,8 @@ export const tipoCuentaController = {
 	async put(req, res) {
 		try {
 			const { id } = req.params;
-			const nuevaCuenta = await tipoCuentaRepositorie.put(id, req.body);
-			res.json(nuevaCuenta);
+			const cuentaEditada = await tipoCuentaRepositorie.put(id, req.body);
+			res.json(cuentaEditada);
 		} catch (error) {
 			let errores = {};
 			try {
@@ -61,6 +61,7 @@ export const tipoCuentaController = {
 		}
 	}
 };
+
 
 
 
