@@ -19,7 +19,7 @@ PUT http://localhost:3000/sucursales/4
 Content-Type: application/json
 
 {
-  "estado": false 
+  "Estado": false 
 }
 
 
@@ -28,12 +28,12 @@ POST http://localhost:3000/sucursales
 Content-Type: application/json
 
 {
-    "nombre": "hola",
-    "ciudad": "noway",
-    "direccion": "Av libre Impuestos 256",
-    "telefono": "12343542",
-    "email": "sucursal2@gmail.com",
-    "estado": true
+    "Nombre": "hola",
+    "Ciudad": "noway",
+    "Direccion": "Av libre Impuestos 256",
+    "Telefono": "12343542",
+    "Email": "sucursal2@gmail.com",
+    "Estado": true
 }
 
 ###
@@ -71,3 +71,8 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:3000/tiposCuentas/3
+
+
+###Usuarios
+
+GET http://localhost:3000/usuarios

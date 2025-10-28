@@ -1,10 +1,10 @@
-import { sucursalRepositorie } from "../repositories/sucursalRepositorie.js";
+import { sucursalRepository } from "../repositories/sucursalRepository.js";
 import { formatearErroresZod } from "../utils/staticFunctions.js";
 
 export const sucursalController = {
     async listar(req,res){
         try {
-            const sucursales = await sucursalRepositorie.listar();
+            const sucursales = await sucursalRepository.listar();
             if (sucursales.length === 0) {
                 return res.status(404).json({ message: "No se encontraron sucursales" });
             }
@@ -17,7 +17,7 @@ export const sucursalController = {
     async getId(req,res){
         try{
             const {id} = req.params;
-            const sucursal = await sucursalRepositorie.getId(id);
+            const sucursal = await sucursalRepository.getId(id);
             res.json(sucursal);
         }
         catch{
@@ -27,7 +27,7 @@ export const sucursalController = {
     }, 
     async crear(req,res){
         try{
-            const nuevaSucursal = await sucursalRepositorie.crear(req.body);
+            const nuevaSucursal = await sucursalRepository.crear(req.body);
             res.status(201).json(nuevaSucursal);
         }
         catch(error){
@@ -38,7 +38,7 @@ export const sucursalController = {
     async put(req, res) {
         try {
 			const { id } = req.params;
-			const nuevaSucursal = await sucursalRepositorie.put(id, req.body);
+			const nuevaSucursal = await sucursalRepository.put(id, req.body);
 			res.json(nuevaSucursal);
 		} catch (error) {
 			let errores = {};
@@ -55,7 +55,7 @@ export const sucursalController = {
     async delete(req,res){
         try{
             const {id} = req.params;
-            const sucursal = await sucursalRepositorie.delete(id);
+            const sucursal = await sucursalRepository.delete(id);
             res.json({message: "eliminado correctamente",sucursal});
         }
         catch(error){

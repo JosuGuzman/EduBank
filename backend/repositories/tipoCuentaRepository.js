@@ -2,7 +2,7 @@ import db from "../db.js";
 import { crearTipoCuentaSchema , editarTipoCuentaSchema} from "../models/tipoCuenta.js";
 import { formatearErroresZod } from "../utils/staticFunctions.js";
 
-export const tipoCuentaRepositorie = {
+export const tipoCuentaRepository = {
 	async listar() {
 		return await db("tipoCuenta").select("*");
 	},
@@ -35,8 +35,9 @@ export const tipoCuentaRepositorie = {
     },
     async delete(id){
         const tipoCuenta = await db("tipoCuenta").where({ idTipoCuenta: id }).first();
+
         if (!tipoCuenta) {
-            throw new Error("no se encontro el tipo de cuenta");
+            throw new Error("El tipo de cuenta no existe");
         }
         await db("tipoCuenta").where({ idTipoCuenta: id }).delete();
         return tipoCuenta;

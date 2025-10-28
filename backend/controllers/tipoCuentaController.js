@@ -1,4 +1,4 @@
-import { tipoCuentaRepositorie } from "../repositories/tipoCuentaRepositorie.js";
+import { tipoCuentaRepository } from "../repositories/tipoCuentaRepository.js";
 
 export const tipoCuentaController = {
 	async listar(req, res) {

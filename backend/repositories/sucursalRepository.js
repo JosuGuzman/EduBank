@@ -1,8 +1,8 @@
 import db from "../db.js";
-import { editarSucursalSchema, sucursalSchema, crearSucursalSchema } from "../models/sucursal.js";
+import { editarSucursalSchema, crearSucursalSchema } from "../models/sucursal.js";
 import { formatearErroresZod } from "../utils/staticFunctions.js";
 
-export const sucursalRepositorie = {
+export const sucursalRepository = {
 	async listar() {
 		return await db("sucursal").select("*");
 	},
@@ -14,9 +14,9 @@ export const sucursalRepositorie = {
 		return sucursal
 	},
 	async crear(datos) {
-		// Validar los datos de entrada con Zod
+		
 		const nuevaSucursal = crearSucursalSchema.parse(datos);
-		// Insertar en la base
+
 		const [id] = await db("Sucursal").insert(nuevaSucursal);
 		return { id, ...nuevaSucursal };
 	},

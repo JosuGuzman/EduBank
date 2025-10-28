@@ -1,7 +1,7 @@
 import db from "../db.js";
 import { cuentaSchema } from "../models/cuenta.js";
 
-export const cuentaRepositorie = {
+export const cuentaRepository = {
 	async listar() {
 		return await db("cuenta").select("*");
 	},

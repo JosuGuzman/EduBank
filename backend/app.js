@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import cuentaRoutes from "./routes/cuentaRoutes.js";
 import sucursalRoutes from "./routes/sucursalesRoutes.js";
 import tipoCuentaRoutes from "./routes/tipoCuentaRoutes.js";
+import usuarioRoutes from "./routes/usuarioRoutes.js";
 
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(rateLimit({ windowMs: 60 * 1000, max: 100 }));
 app.use("/cuentas", cuentaRoutes);
 app.use("/sucursales", sucursalRoutes);
 app.use("/tiposCuentas", tipoCuentaRoutes);
+app.use("/usuarios", usuarioRoutes);
 
 app.get("/", (req, res) => {
     res.send("Servidor bancario activo ✅");

@@ -1,9 +1,9 @@
-import { cuentaRepositorie } from "../repositories/cuentaRepositorie.js";
+import { cuentaRepository } from "../repositories/cuentaRepository.js";
 
 export const cuentaController = {
 	async listar(req, res) {
 		try {
-			const cuentas = await cuentaRepositorie.listar();
+			const cuentas = await cuentaRepository.listar();
 			if (cuentas.length === 0) {
 				return res.status(404).json({ message: "No se encontraron cuentas" });
 			}
@@ -15,7 +15,7 @@ export const cuentaController = {
 	},
 	async listartTodo(req, res) {
 		try{
-			const cuentasDetalladas = await cuentaRepositorie.listarTodo();
+			const cuentasDetalladas = await cuentaRepository.listarTodo();
 			if(cuentasDetalladas.length === 0){
 				return res.status(404).json({message: "No se encontraron cuentas"});
 			}
