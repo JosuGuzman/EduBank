@@ -7,7 +7,7 @@
 
 **Nombre TP**: EduBank
 
-**Apellido y Nombre Alumno**: Miguel Verdugues, Josu Duran,
+**Apellido y Nombre Alumno**: Verdugues Miguel, Guzman Josu, Tito Joel, Mendoza Davis, Bruno Carlos
 
 **Curso**: 6 ° 7
 
@@ -147,5 +147,24 @@ Clonar el repositorio github, desde Github Desktop o ejecutar en la terminal o C
 ```
 https://github.com/JosuGuzman/EduBank
 ```
+Y instalar depedencias:
+```
+npm install
+```
 
 ## Pre-requisitos 📋
+- Node.js (versión 16 o superior)
+- Visual Studio Code - [Descargar](https://code.visualstudio.com/#alt-downloads)
+- Git - [Descargar](https://git-scm.com/downloads)
+- MySQL - [Descargar](https://dev.mysql.com/downloads/mysql/)
+- npm o yarn como gestor de paquetes
+
+## Despliegue 📦
+
+_Para iniciar el proyecto primero debe desplegar la base de datos y para eso tiene que hacer segundo click en la carpeta scripts sql_
+_y presionar en terminal integrado, le aparecera una terminal donde tiene que poner lo siguiente:_
+
+```
+mysql -u tuUsuario -p 
+:tuContraseña
+```
