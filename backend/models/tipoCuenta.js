@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const tipoCuentaSchema = z.object({
-	idTipoCuenta: z.number({
+	IdTipoCuenta: z.number({
 		invalid_type_error: "El ID del tipo de cuenta debe ser un número",
-	}), // auto-incremental en la DB
+	}).optional(), 
 	Nombre: z
 		.string({
 			required_error: "El nombre del tipo de cuenta es obligatorio",

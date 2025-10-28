@@ -10,35 +10,35 @@ export const cuentaSchema = z.object({
 		})
 		.int({ message: "El ID debe ser un número entero" })
 		.positive({ message: "El ID debe ser positivo" })
-		.optional(), // auto-incremental en la DB
-	cbu: z
+		.optional(), 
+	CBU: z
 		.string({
 			required_error: "El CBU es obligatorio",
 			invalid_type_error: "El CBU debe ser un texto",
 		})
 		.length(22, { message: "El CBU debe tener exactamente 22 caracteres" }),
-	alias: z
+	Alias: z
 		.string({
 			invalid_type_error: "El alias debe ser un texto",
 		})
 		.max(30, { message: "El alias no puede superar 30 caracteres" })
 		.optional(),
-	saldo: z
-		.number({
-			invalid_type_error: "El saldo debe ser un número",
-		})
-		.default(0.0),
-	fechaApertura: z
-		.string({
-			required_error: "La fecha de apertura es obligatoria",
-			invalid_type_error: "La fecha de apertura debe ser un string en formato datetime",
-		})
-		.datetime(),
-	activa: z
-		.boolean({
-			invalid_type_error: "Activa debe ser true o false",
-		})
-		.default(true),
+	Saldo: z.preprocess(
+		(val) => {
+			// si viene como string, convertir a número
+			if (typeof val === "string") return parseFloat(val);
+			return val;
+		},
+		z
+			.number({
+				invalid_type_error: "La tasa de interés debe ser un número",
+			})
+			.nonnegative({ message: "La tasa de interés no puede ser negativa" })
+			.default(0)
+	),
+	FechaApertura: z.union([z.string().datetime(), z.date()]),
+	Activa: z.union([z.boolean(), z.number().transform((n) => Boolean(n))]),
+	
 	usuario: usuarioSchema, // Objeto Usuario con sucursal anidada
 	tipoCuenta: tipoCuentaSchema, // Objeto TipoCuenta
 	sucursal: sucursalSchema, // Objeto Sucursal de la cuenta

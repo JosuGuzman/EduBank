@@ -11,10 +11,8 @@ export const tipoCuentaRepository = {
         if(!tipoCuenta){
             throw new Error("no se encontro el tipo de cuenta");
         }
-        
-        const showTipoCuenta = crearTipoCuentaSchema.parse(tipoCuenta);
 
-        return showTipoCuenta;
+        return tipoCuenta;
     },
     async crear(datos){
         const nuevaTipoCuenta = crearTipoCuentaSchema.parse(datos);

@@ -17,7 +17,7 @@ export const usuarioRepository = {
 
                 const usuarioConSucursal = {
                     ...usuario,
-                    sucursal,
+                    sucursal
                 };
 
                 return usuarioSchema.parse(usuarioConSucursal);

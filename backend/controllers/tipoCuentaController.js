@@ -3,7 +3,7 @@ import { tipoCuentaRepository } from "../repositories/tipoCuentaRepository.js";
 export const tipoCuentaController = {
 	async listar(req, res) {
 		try {
-			const cuentas = await tipoCuentaRepositorie.listar();
+			const cuentas = await tipoCuentaRepository.listar();
 			if (cuentas.length === 0) {
 				return res.status(404).json({ message: "No se encontraron cuentas" });
 			}
@@ -16,7 +16,7 @@ export const tipoCuentaController = {
 	async getId(req,res){
 		try{
 			const {id} = req.params;
-			const tipoCuenta = await tipoCuentaRepositorie.getId(id);
+			const tipoCuenta = await tipoCuentaRepository.getId(id);
 			res.json(tipoCuenta);
 		}
 		catch(error){
@@ -26,7 +26,7 @@ export const tipoCuentaController = {
 	},
 	async crear(req, res) {
 		try {
-			const nuevaCuenta = await tipoCuentaRepositorie.crear(req.body);
+			const nuevaCuenta = await tipoCuentaRepository.crear(req.body);
 			res.status(201).json(nuevaCuenta);
 		} catch (error) {
 			console.error("Error en tipoCuentaController.crear:", error);
@@ -36,7 +36,7 @@ export const tipoCuentaController = {
 	async put(req, res) {
 		try {
 			const { id } = req.params;
-			const cuentaEditada = await tipoCuentaRepositorie.put(id, req.body);
+			const cuentaEditada = await tipoCuentaRepository.put(id, req.body);
 			res.json(cuentaEditada);
 		} catch (error) {
 			let errores = {};
@@ -53,7 +53,7 @@ export const tipoCuentaController = {
 	async delete(req, res) {
 		try {
 			const { id } = req.params;
-			const cuenta = await tipoCuentaRepositorie.delete(id);
+			const cuenta = await tipoCuentaRepository.delete(id);
 			res.json({ message: "eliminado correctamente", cuenta });
 		} catch (error) {
 			console.error("Error en tipoCuentaController.delete:", error);
