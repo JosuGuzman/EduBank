@@ -44,6 +44,16 @@ export const usuarioController = {
 				errores,
 			});
         }
+    },
+    delete: async(req,res) => {
+        try{
+            const id = req.params.id;
+            const usuario = await usuarioRepository.delete(id);
+            res.json({message: "eliminado correctamente", usuario});
+        }
+        catch(error){
+            res.status(500).json({ error: error.message });
+        }
     }
 };
 

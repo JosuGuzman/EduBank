@@ -105,3 +105,7 @@ Content-Type: application/json
   "IdSucursal": 4
 }
 
+###
+DELETE http://localhost:3000/usuarios/3
+
+

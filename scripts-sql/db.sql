@@ -37,7 +37,7 @@ CREATE TABLE Usuario (
     Rol ENUM('cliente','empleado','gerente','admin') DEFAULT 'cliente',
     FechaAlta DATETIME DEFAULT CURRENT_TIMESTAMP,
     Activo BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (IdSucursal) REFERENCES Sucursal(IdSucursal)
+    FOREIGN KEY (IdSucursal) REFERENCES Sucursal(IdSucursal) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ========================================

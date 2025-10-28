@@ -77,6 +77,14 @@ export const usuarioRepository = {
         await db("usuario").where({ idUsuario: id }).update(data);
         const usuarioUpdate = await db("usuario").where({ idUsuario: id }).first();
         return { ...usuarioUpdate, ...data };
+    },
+    async delete(id){
+        const usuario = await db("usuario").where({ idUsuario: id }).first();
+        if (!usuario) {
+            throw new Error("El usuario no existe");
+        }
+        await db("usuario").where({ idUsuario: id }).delete();
+        return usuario;
     }
 }
 
