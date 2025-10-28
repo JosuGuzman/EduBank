@@ -48,8 +48,3 @@ export const tipoCuentaSchema = z.object({
 export const crearTipoCuentaSchema = tipoCuentaSchema.omit({ idTipoCuenta: true });
 
 export const editarTipoCuentaSchema = tipoCuentaSchema.partial();
-
-
-
-
-

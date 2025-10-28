@@ -36,10 +36,3 @@ export const crearSucursalSchema = sucursalSchema.omit({ idSucursal: true });
 
 export const editarSucursalSchema = crearSucursalSchema
 	.partial()
-
-
-
-
-
-
-

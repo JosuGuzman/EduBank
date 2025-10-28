@@ -87,18 +87,3 @@ export const usuarioRepository = {
         return usuario;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

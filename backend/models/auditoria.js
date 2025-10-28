@@ -40,4 +40,3 @@ export const auditoriaSchema = z.object({
 export const crearAuditoria = auditoriaSchema.omit({
 	idAuditoria: true,
 });
-

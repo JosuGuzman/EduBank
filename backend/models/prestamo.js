@@ -49,4 +49,3 @@ export const prestamoSchema = z.object({
 });
 
 export const crearPrestamo = prestamoSchema.omit({ idPrestamo: true });
-

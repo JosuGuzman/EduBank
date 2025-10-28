@@ -42,9 +42,4 @@ export const tipoCuentaRepository = {
         await db("tipoCuenta").where({ idTipoCuenta: id }).delete();
         return tipoCuenta;
     }
-};  
-
-
-
-
-
+};

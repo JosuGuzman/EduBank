@@ -31,4 +31,3 @@ export const transaccionSchema = z.object({
 
 // Para crear una transacción nueva sin el id
 export const transaccionCreate = transaccionSchema.omit({ idTransaccion: true });
-

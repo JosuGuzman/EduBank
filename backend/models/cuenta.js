@@ -82,4 +82,3 @@ export const crearCuentaSchema = z.object({
 		})
 		.default(true),
 });
-

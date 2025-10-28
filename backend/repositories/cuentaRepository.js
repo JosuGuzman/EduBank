@@ -78,9 +78,3 @@ export const cuentaRepository = {
 
 	},
 };
-
-
-
-
-
-

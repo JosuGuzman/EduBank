@@ -10,6 +10,3 @@ router.put("/:id", tipoCuentaController.put);
 router.delete("/:id", tipoCuentaController.delete);
 
 export default router;
-
-
-

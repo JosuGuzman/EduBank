@@ -10,7 +10,3 @@ router.post("/", usuarioController.crear);
 router.delete("/:id", usuarioController.delete);
 
 export default router;
-
-
-
-

@@ -44,4 +44,3 @@ export const crearNotificacion = notificacionSchema.omit({
 	idNotificacion: true,
 	usuario: true,
 });
-

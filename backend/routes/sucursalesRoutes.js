@@ -10,5 +10,3 @@ router.put("/:id", sucursalController.put);
 router.delete("/:id", sucursalController.delete);
 
 export default router;
-
-

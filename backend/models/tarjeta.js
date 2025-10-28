@@ -48,4 +48,3 @@ export const tarjetaSchema = z.object({
 export const crearTarjeta = tarjetaSchema.omit({
 	idTarjeta: true,
 });
-

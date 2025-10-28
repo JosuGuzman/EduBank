@@ -59,14 +59,3 @@ export const usuarioInputSchema = z.object({
 });
 
 export const editarUsuarioSchema = usuarioInputSchema.partial();
-
-
-
-
-
-
-
-
-
-
-

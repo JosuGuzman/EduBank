@@ -7,5 +7,3 @@ router.get("/", cuentaController.listar);
 router.get("/detalle", cuentaController.listartTodo);
 
 export default router;
-
-
