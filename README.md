@@ -24,80 +24,119 @@ Este proyecto es un Sistema Bancario Backend desarrollado con Node.js y Express 
 - Auditoría de operaciones
 - Notificaciones a usuarios
 
+<h3 align="center"> Diagrama de clases del Proyecto </h3>
+
 ```mermaid
 erDiagram
-    Pais{   
-        TINYINT idPais PK
-        VARCHAR(20) nombre UK
-        VARCHAR(30) entrenador
-        CHAR(1) grupo
-    }
-    Estadio{
-        TINYINT idEstadio PK
-        VARCHAR(40) nombre UK
-        VARCHAR(200) descripcion
-    }
-    TipoPartido{
-        TINYINT idTipoPartido PK
-        CHAR(13) tipoPartido UK
-    }
-    Partido{
-        TINYINT idPartido PK
-        TINYINT idLocal FK
-        TINYINT idVisitante FK
-        TINYINT idEstadio FK
-        TINYINT idTipoPartido
-        TIMESTAMP fecha
-        TINYINT golesLocales
-        TINYINT golesVisitantes
-        TINYINT_UNSIGNED duracion
-    }
-    Posicion{
-        TINYINT idPosicion PK
-        CHAR(13) posicion UK
-    }
-    Jugador{
-        SMALLINT idJugador PK
-        TINYINT idPais FK
-        TINYINT idPosicion FK
-        VARCHAR(20) nombre
-        VARCHAR(20) apellido
-        DATE nacimiento 
-        TINYINT_UNSIGNED numCamiseta
-    }
-    JugadorPartido{
-        SMALLINT idJugador PK, FK
-        TINYINT idPartido PK, FK
-        SMALLINT idReemplazo FK
-        TINYINT_UNSIGNED ingreso
-        TINYINT_UNSIGNED ingresoAdicionado
-        TINYINT_UNSIGNED egreso
-        TINYINT_UNSIGNED egresoAdicionado
-    }
-    Gol{
-        SMALLINT idJugador PK
-        TINYINT idPartido PK, FK
-        TINYINT_UNSIGNED minuto PK
-        BOOL enContra
-    }
-    DefinicionPenal{
-        TINYINT idPartido PK, FK
-        SMALLINT idJugador PK, FK
-        TINYINT_UNSIGNED turno PK
-        BOOL acierto
+    SUCURSAL {
+        int IdSucursal PK
+        string Nombre
+        string Direccion
+        string Ciudad
+        string Telefono
+        string Email
+        boolean Estado
     }
 
-    Jugador }o--|| Posicion :""
-    Jugador }o--|| Pais :""
-    Partido }o--|| Estadio :""
-    Partido }o--|| TipoPartido :""
-    JugadorPartido }o--|| Jugador :""
-    JugadorPartido }o--|| Partido :""
-    Gol }o--|| Jugador :""
-    Gol }o--|| Partido :""
-    DefinicionPenal }o--|| Jugador :""
-    DefinicionPenal }o--|| Partido :""
+    USUARIO {
+        int IdUsuario PK
+        int IdSucursal FK
+        string Nombre
+        string DNI
+        string Email
+        string Telefono
+        string Direccion
+        string PasswordHash
+        enum Rol
+        datetime FechaAlta
+        boolean Activo
+    }
 
+    TIPO_CUENTA {
+        int IdTipoCuenta PK
+        string Nombre
+        string Descripcion
+        boolean PermiteCredito
+        string Moneda
+        decimal TasaInteres
+    }
+
+    CUENTA {
+        int IdCuenta PK
+        int IdUsuario FK
+        int IdTipoCuenta FK
+        int IdSucursal FK
+        string CBU
+        string Alias
+        decimal Saldo
+        datetime FechaApertura
+        boolean Activa
+    }
+
+    TRANSACCION {
+        int IdTransaccion PK
+        int IdCuentaOrigen FK
+        int IdCuentaDestino FK
+        decimal Monto
+        datetime Fecha
+        enum Tipo
+        string Descripcion
+        enum Estado
+    }
+
+    TARJETA {
+        int IdTarjeta PK
+        int IdCuenta FK
+        string NumeroTarjeta
+        date FechaVencimiento
+        string CVV
+        enum Tipo
+        decimal LimiteCredito
+        decimal SaldoDisponible
+        boolean Activa
+    }
+
+    PRESTAMO {
+        int IdPrestamo PK
+        int IdUsuario FK
+        decimal Monto
+        decimal TasaInteres
+        int PlazoMeses
+        datetime FechaInicio
+        datetime FechaFin
+        enum Estado
+        decimal CuotaMensual
+    }
+
+    AUDITORIA {
+        int IdAuditoria PK
+        int IdUsuario FK
+        string Accion
+        datetime Fecha
+        string Detalle
+        string IP
+    }
+
+    NOTIFICACION {
+        int IdNotificacion PK
+        int IdUsuario FK
+        string Titulo
+        string Mensaje
+        datetime FechaEnvio
+        boolean Leida
+        enum Tipo
+    }
+
+    SUCURSAL ||--o{ USUARIO : "tiene"
+    SUCURSAL ||--o{ CUENTA : "opera_en"
+    USUARIO ||--o{ CUENTA : "posee"
+    USUARIO ||--o{ PRESTAMO : "solicita"
+    USUARIO ||--o{ AUDITORIA : "genera"
+    USUARIO ||--o{ NOTIFICACION : "recibe"
+    TIPO_CUENTA ||--o{ CUENTA : "clasifica"
+    CUENTA ||--o{ TRANSACCION : "origen_en"
+    CUENTA ||--o{ TRANSACCION : "destino_en"
+    CUENTA ||--o{ TARJETA : "asociada_a"
 
 ```
 
