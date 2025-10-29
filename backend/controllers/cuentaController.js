@@ -13,5 +13,17 @@ export const cuentaController = {
 			res.status(500).json({ message: "Error al obtener cuentas" });
 		}
 	},
-
+	async getId(req,res){
+		try {
+			const {id} = req.params
+			const cuenta = await cuentaRepository.getId(id);
+			if (!cuenta) {
+				return res.status(404).json({ message: "No se encontraro la cuenta" });
+			}
+			res.json(cuenta);
+		} catch (error) {
+			console.error("Error en cuentaController.getid:", error);
+			res.status(500).json({ message: "Error al obtener cuenta" });
+		}
+	}
 };

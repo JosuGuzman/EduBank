@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const tipoCuentaSchema = z.object({
-	IdTipoCuenta: z.number({
+	idTipoCuenta: z.number({
 		invalid_type_error: "El ID del tipo de cuenta debe ser un número",
 	}).optional(), 
 	Nombre: z

@@ -30,5 +30,29 @@ export const cuentaRepository = {
 		)
 		return showCuentas;
 
+	},
+	async getId(id){
+		const cuenta = await db("cuenta")
+		.join("sucursal", "cuenta.IdSucursal", "sucursal.IdSucursal")
+		.join("usuario", "cuenta.IdUsuario", "usuario.IdUsuario")
+		.join("tipoCuenta", "cuenta.IdTipoCuenta", "tipoCuenta.IdTipoCuenta")
+		.where({idCuenta: id})
+		.first()
+		if(!cuenta){
+			throw new Error("No se pudo encontrar la cuenta")
+		}
+
+		const usuario = await usuarioRepository.getId(cuenta.IdUsuario);
+		const tipoCuenta = await tipoCuentaRepository.getId(cuenta.IdTipoCuenta);
+		const sucursal = await sucursalRepository.getId(cuenta.IdSucursal);
+
+		const cuentaTotal = {
+			...cuenta,
+			usuario,
+			tipoCuenta,
+			sucursal
+		}
+		const showCuenta = cuentaSchema.parse(cuentaTotal);
+		return showCuenta;
 	}
 };

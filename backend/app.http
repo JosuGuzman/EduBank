@@ -1,4 +1,9 @@
+###
 GET http://localhost:3000/cuentas
+
+###
+
+GET http://localhost:3000/cuentas/1
 
 ###Sucursales
 GET http://localhost:3000/sucursales
