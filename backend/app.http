@@ -21,6 +21,14 @@ Content-Type: application/json
   "FechaApertura": "2025-10-29T14:30:00Z"
 }
 
+###
+PUT  http://localhost:3000/cuentas/1
+Content-Type: application/json
+
+{
+  "Alias": "Davis.Fondo.Mafia"
+}
+
 ###Sucursales
 GET http://localhost:3000/sucursales
 

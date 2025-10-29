@@ -1,5 +1,5 @@
 import db from "../db.js";
-import { cuentaSchema , crearCuentaSchema} from "../models/cuenta.js";
+import { cuentaSchema , crearCuentaSchema, editarCuentaSchema} from "../models/cuenta.js";
 import {usuarioRepository} from "./usuarioRepository.js"
 import { tipoCuentaRepository } from "./tipoCuentaRepository.js"
 import { sucursalRepository } from "./sucursalRepository.js";
@@ -70,5 +70,36 @@ export const cuentaRepository = {
 		const cuentaShow = await db("cuenta").where({ IdCuenta }).first();
 		
 		return cuentaShow;
+	},
+	async put(id, datos) {
+		const resultado = editarCuentaSchema.safeParse(datos);
+		if (!resultado.success) {
+			throw new Error(JSON.stringify(formatearErroresZod(resultado.error)));
+		}
+
+		const { data } = resultado;
+
+		// 🔹 Evitar update vacío
+		if (!data || Object.keys(data).length === 0) {
+			throw new Error("No se proporcionaron campos para actualizar");
+		}
+
+		// 🔹 Formatear fecha si viene incluida
+		if (data.FechaApertura) {
+			if (data.FechaApertura instanceof Date) {
+				data.FechaApertura = data.FechaApertura
+					.toISOString()
+					.slice(0, 19)
+					.replace('T', ' ');
+			} else if (typeof data.FechaApertura === "string" && data.FechaApertura.includes("T")) {
+				data.FechaApertura = data.FechaApertura.slice(0, 19).replace('T', ' ');
+			}
+		}
+
+		await db("cuenta").where({ idCuenta: id }).update(data);
+
+		const cuentaActualizada = await db("cuenta").where({ idCuenta: id }).first();
+		return cuentaActualizada;
 	}
+
 };

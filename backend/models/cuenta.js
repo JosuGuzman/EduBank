@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { usuarioSchema } from "./usuario.js";
 import { tipoCuentaSchema } from "./tipoCuenta.js";
-import { sucursalSchema } from "./sucursal.js";
+import { crearSucursalSchema, sucursalSchema } from "./sucursal.js";
 
 export const cuentaSchema = z.object({
 	idCuenta: z
@@ -83,3 +83,5 @@ export const crearCuentaSchema = z.object({
 		.default(true),
 	FechaApertura: z.union([z.string().datetime(), z.date()])
 });
+
+export const editarCuentaSchema = crearCuentaSchema.partial();

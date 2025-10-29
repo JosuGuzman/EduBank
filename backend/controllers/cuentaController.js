@@ -1,3 +1,4 @@
+import { body } from "express-validator";
 import { cuentaRepository } from "../repositories/cuentaRepository.js";
 
 export const cuentaController = {
@@ -35,6 +36,20 @@ export const cuentaController = {
 		catch(error){
 			console.error("Error en cuentaController.crear:", error);
 			res.status(500).json({ message: "Error al crear cuenta" });
+		}
+	},
+	async put(req, res) {
+		try {
+			const id = req.params.id;
+			const datos = req.body;
+
+			console.log("Datos recibidos en PUT:", datos); // 🔍 Debug
+
+			const cuenta = await cuentaRepository.put(id, datos);
+			return res.status(200).json(cuenta);
+		} catch (error) {
+			console.error("Error en cuentaController.put:", error);
+			res.status(500).json({ message: "Error al actualizar cuenta" });
 		}
 	}
 

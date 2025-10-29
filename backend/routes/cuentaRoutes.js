@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.get("/", cuentaController.listar);
 router.get("/:id", cuentaController.getId);
-router.post("/", cuentaController.crear)
+router.post("/", cuentaController.crear);
+router.put("/:id", cuentaController.put)
 
 export default router;
