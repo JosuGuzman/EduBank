@@ -1,5 +1,5 @@
 import db from "../db.js";
-import { cuentaSchema } from "../models/cuenta.js";
+import { cuentaSchema , crearCuentaSchema} from "../models/cuenta.js";
 import {usuarioRepository} from "./usuarioRepository.js"
 import { tipoCuentaRepository } from "./tipoCuentaRepository.js"
 import { sucursalRepository } from "./sucursalRepository.js";
@@ -54,5 +54,21 @@ export const cuentaRepository = {
 		}
 		const showCuenta = cuentaSchema.parse(cuentaTotal);
 		return showCuenta;
+	},
+	async crear(datos){
+		const VerificadorDeDatos = crearCuentaSchema.parse(datos);
+
+		const fechaMySQL = new Date(VerificadorDeDatos.FechaApertura).toISOString().slice(0, 19).replace("T", " ");
+
+		const CuentaAcrear = {
+			...VerificadorDeDatos,
+			FechaApertura: fechaMySQL
+		}
+
+		const [IdCuenta] = await db("cuenta").insert(CuentaAcrear);
+		
+		const cuentaShow = await db("cuenta").where({ IdCuenta }).first();
+		
+		return cuentaShow;
 	}
 };

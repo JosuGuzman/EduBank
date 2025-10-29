@@ -47,38 +47,39 @@ export const cuentaSchema = z.object({
 
 // Esquema para crear una nueva cuenta (sin idCuenta)
 export const crearCuentaSchema = z.object({
-	idUsuario: z.number({
+	IdUsuario: z.number({
 		required_error: "El ID del usuario es obligatorio",
 		invalid_type_error: "El ID del usuario debe ser un número",
 	}),
-	idTipoCuenta: z.number({
+	IdTipoCuenta: z.number({
 		required_error: "El ID del tipo de cuenta es obligatorio",
 		invalid_type_error: "El ID del tipo de cuenta debe ser un número",
 	}),
-	idSucursal: z.number({
+	IdSucursal: z.number({
 		required_error: "El ID de la sucursal es obligatorio",
 		invalid_type_error: "El ID de la sucursal debe ser un número",
 	}),
-	cbu: z
+	CBU: z
 		.string({
 			required_error: "El CBU es obligatorio",
 			invalid_type_error: "El CBU debe ser un texto",
 		})
 		.length(22, { message: "El CBU debe tener exactamente 22 caracteres" }),
-	alias: z
+	Alias: z
 		.string({
 			invalid_type_error: "El alias debe ser un texto",
 		})
 		.max(30, { message: "El alias no puede superar 30 caracteres" })
 		.optional(),
-	saldo: z
+	Saldo: z
 		.number({
 			invalid_type_error: "El saldo debe ser un número",
 		})
 		.default(0.0),
-	activa: z
+	Activa: z
 		.boolean({
 			invalid_type_error: "Activa debe ser true o false",
 		})
 		.default(true),
+	FechaApertura: z.union([z.string().datetime(), z.date()])
 });

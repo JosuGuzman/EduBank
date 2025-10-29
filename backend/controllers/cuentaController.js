@@ -25,5 +25,17 @@ export const cuentaController = {
 			console.error("Error en cuentaController.getid:", error);
 			res.status(500).json({ message: "Error al obtener cuenta" });
 		}
+	},
+	async crear(req,res){
+		try{
+			const datos = req.body;
+			const cuenta = await cuentaRepository.crear(datos)
+			return res.status(200).json(cuenta)
+		}
+		catch(error){
+			console.error("Error en cuentaController.crear:", error);
+			res.status(500).json({ message: "Error al crear cuenta" });
+		}
 	}
+
 };
