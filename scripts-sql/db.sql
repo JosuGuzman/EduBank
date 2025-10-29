@@ -65,9 +65,9 @@ CREATE TABLE Cuenta (
     Saldo DECIMAL(18,2) DEFAULT 0.00,
     FechaApertura DATETIME DEFAULT CURRENT_TIMESTAMP,
     Activa BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario),
-    FOREIGN KEY (IdTipoCuenta) REFERENCES TipoCuenta(IdTipoCuenta),
-    FOREIGN KEY (IdSucursal) REFERENCES Sucursal(IdSucursal)
+    FOREIGN KEY (IdUsuario) REFERENCES Usuario(IdUsuario) ON DELETE CASCADE,
+    FOREIGN KEY (IdTipoCuenta) REFERENCES TipoCuenta(IdTipoCuenta) ON DELETE CASCADE,
+    FOREIGN KEY (IdSucursal) REFERENCES Sucursal(IdSucursal) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ========================================
@@ -82,8 +82,8 @@ CREATE TABLE Transaccion (
     Tipo ENUM('deposito','retiro','transferencia','pago') NOT NULL,
     Descripcion VARCHAR(255),
     Estado ENUM('pendiente','completado','cancelado') DEFAULT 'completado',
-    FOREIGN KEY (IdCuentaOrigen) REFERENCES Cuenta(IdCuenta),
-    FOREIGN KEY (IdCuentaDestino) REFERENCES Cuenta(IdCuenta)
+    FOREIGN KEY (IdCuentaOrigen) REFERENCES Cuenta(IdCuenta) ON DELETE CASCADE,
+    FOREIGN KEY (IdCuentaDestino) REFERENCES Cuenta(IdCuenta) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ========================================
@@ -99,7 +99,7 @@ CREATE TABLE Tarjeta (
     LimiteCredito DECIMAL(18, 2) DEFAULT 0.00,
     SaldoDisponible DECIMAL(18, 2) DEFAULT 0.00,
     Activa BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (IdCuenta) REFERENCES Cuenta(IdCuenta)
+    FOREIGN KEY (IdCuenta) REFERENCES Cuenta(IdCuenta) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- ========================================

@@ -7,5 +7,6 @@ router.get("/", cuentaController.listar);
 router.get("/:id", cuentaController.getId);
 router.post("/", cuentaController.crear);
 router.put("/:id", cuentaController.put)
+router.delete("/:id", cuentaController.delete);
 
 export default router;

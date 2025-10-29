@@ -51,6 +51,18 @@ export const cuentaController = {
 			console.error("Error en cuentaController.put:", error);
 			res.status(500).json({ message: "Error al actualizar cuenta" });
 		}
+	},
+	async delete(req, res) {
+		try {
+			const { id } = req.params;
+			const cuenta = await cuentaRepository.delete(id);
+			return res.status(200).json({
+				message: "Se eliminó correctamente",
+				cuenta
+			});
+		} catch (error) {
+			console.error("Error en cuentaController.delete:", error);
+			res.status(500).json({ message: "Error al eliminar cuenta" });
+		}
 	}
-
 };

@@ -100,6 +100,18 @@ export const cuentaRepository = {
 
 		const cuentaActualizada = await db("cuenta").where({ idCuenta: id }).first();
 		return cuentaActualizada;
-	}
+	},
+	async delete(id) {
+		const cuentaAeliminar = await db("cuenta")
+			.where({ idCuenta: Number(id) })
+			.first();
 
+		if (!cuentaAeliminar) {
+			throw new Error("No se encontró la cuenta");
+		}
+
+		await db("cuenta").where({ idCuenta: Number(id) }).delete();
+
+		return { ...cuentaAeliminar }; // devuelve objeto plano
+	}
 };
