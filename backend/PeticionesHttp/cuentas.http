@@ -1,0 +1,28 @@
+### cuentas
+
+GET http://localhost:3000/cuentas
+
+GET http://localhost:3000/cuentas/1
+
+POST http://localhost:3000/cuentas
+Content-Type: application/json
+
+{
+  "IdUsuario": 1,
+  "IdTipoCuenta": 1,
+  "IdSucursal": 1,
+  "CBU": "0220053100012345678924",
+  "Alias": "Davis.Fondo.Mansion",
+  "Saldo": 40000,
+  "Activa": true,
+  "FechaApertura": "2025-10-29T14:30:00Z"
+}
+
+PUT  http://localhost:3000/cuentas/4
+Content-Type: application/json
+
+{
+  "Alias": "Davis.Fondo.Mafia"
+}
+
+DELETE  http://localhost:3000/cuentas/2
