@@ -7,6 +7,7 @@ import cuentaRoutes from "./routes/cuentaRoutes.js";
 import sucursalRoutes from "./routes/sucursalesRoutes.js";
 import tipoCuentaRoutes from "./routes/tipoCuentaRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
+import transaccionRoutes from "./routes/transaccionRoutes.js";
 
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.use("/cuentas", cuentaRoutes);
 app.use("/sucursales", sucursalRoutes);
 app.use("/tiposCuentas", tipoCuentaRoutes);
 app.use("/usuarios", usuarioRoutes);
+app.use("/transacciones", transaccionRoutes);
 
 app.get("/", (req, res) => {
     res.send("Servidor bancario activo ✅");
@@ -31,5 +33,3 @@ app.get("/", (req, res) => {
 // Servidor Corriendo
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Servidor corriendo en http://localhost:${PORT}`));
-
-
