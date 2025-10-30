@@ -1,0 +1,104 @@
+
+###TipoCuentas
+
+GET http://localhost:3000/tiposCuentas
+
+
+###
+
+GET http://localhost:3000/tiposCuentas/2
+
+###
+POST http://localhost:3000/tiposCuentas
+Content-Type: application/json
+
+{
+  "Nombre": "Caja empresarial",
+  "Descripcion": "No hay intereses",
+  "PermiteCredito": true,
+  "Moneda": "ARS",
+  "TasaInteres": 0
+}
+
+###
+PUT http://localhost:3000/tiposCuentas/3
+Content-Type: application/json
+
+{
+  "Nombre": "Caja Sin interes"
+}
+
+###
+
+DELETE http://localhost:3000/tiposCuentas/3
+
+
+###Usuarios
+
+GET http://localhost:3000/usuarios
+
+###
+GET http://localhost:3000/usuarios/2
+
+###
+PUT http://localhost:3000/usuarios/2
+Content-Type: application/json
+
+{
+  "Nombre": "Calor"
+}
+
+###
+POST http://localhost:3000/usuarios
+Content-Type: application/json
+
+{
+  "Nombre": "Juan Gonzales",
+  "DNI": "4012326",
+  "Email": "juan.gonzales@gmail.com",
+  "Telefono": "011-1234-5678",
+  "Direccion": "Av. Siempre Viva 742",
+  "Rol": "cliente",
+  "FechaAlta": "2025-10-28T10:00:00.000Z",
+  "Activo": true,
+  "PasswordHash": "123",
+  "IdSucursal": 4
+}
+
+###
+DELETE http://localhost:3000/usuarios/3
+
+### Transacciones
+GET http://localhost:3000/transacciones
+
+###
+
+GET http://localhost:3000/transacciones/1
+
+###
+
+POST http://localhost:3000/transacciones
+Content-Type: application/json
+
+{
+  "idCuentaOrigen": 1,
+  "idCuentaDestino": 2,
+  "monto": 1500.50,
+  "tipo": "transferencia",
+  "descripcion": "Pago de servicios",
+  "estado": "completado"
+}
+
+###
+
+PUT http://localhost:3000/transacciones/1
+Content-Type: application/json
+
+{
+  "descripcion": "Pago de servicios actualizado",
+  "estado": "cancelado"
+}
+
+###
+
+DELETE http://localhost:3000/transacciones/1
