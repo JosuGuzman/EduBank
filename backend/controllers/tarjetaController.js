@@ -25,7 +25,7 @@ export const tarjetaController = {
     async crear(req, res) {
         try {
             const nuevaTarjeta = await tarjetaRepository.crear(req.body);
-            res.status(201).json(nuevaTarjeta);
+            return res.status(201).json(nuevaTarjeta);
         } catch (error) {
             console.error("Error en tarjetaController.crear:", error);
             

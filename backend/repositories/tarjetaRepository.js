@@ -1,5 +1,5 @@
 import db from "../db.js";
-import { tarjetaSchema, crearTarjeta } from "../models/tarjeta.js";
+import { tarjetaSchema, crearTarjetaSchema } from "../models/tarjeta.js";
 import { formatearErroresZod } from "../utils/staticFunctions.js";
 import { cuentaRepository } from "./cuentaRepository.js";
 
@@ -7,7 +7,7 @@ export const tarjetaRepository = {
     async listar() {
         const tarjetas = await db("tarjeta")
             .join("cuenta", "tarjeta.IdCuenta", "cuenta.IdCuenta")
-            .select("tarjeta.*", "cuenta.CBU", "cuenta.Alias");
+            .select("*");
 
         const showTarjetas = await Promise.all(
             tarjetas.map(async (tarjeta) => {
@@ -29,7 +29,7 @@ export const tarjetaRepository = {
         const tarjeta = await db("tarjeta")
             .join("cuenta", "tarjeta.IdCuenta", "cuenta.IdCuenta")
             .where({ IdTarjeta: id })
-            .select("tarjeta.*", "cuenta.CBU", "cuenta.Alias")
+            .select("*")
             .first();
 
         if (!tarjeta) {
@@ -47,19 +47,17 @@ export const tarjetaRepository = {
     },
 
     async crear(datos) {
-        const nuevaTarjeta = crearTarjeta.parse(datos);
-
-        // Validar que la cuenta existe
-        await cuentaRepository.getId(nuevaTarjeta.IdCuenta);
+        const nuevaTarjeta = crearTarjetaSchema.parse(datos);
 
         // Formatear fecha de vencimiento
-        const fechaVencimientoMySQL = nuevaTarjeta.fechaVencimiento 
-            ? new Date(nuevaTarjeta.fechaVencimiento).toISOString().slice(0, 10)
-            : null;
+        const fechaVencimientoMySQL = new Date(nuevoUsuario.FechaAlta)
+          .toISOString()
+          .slice(0, 19)
+          .replace("T", " ");
 
         const tarjetaParaBD = {
             ...nuevaTarjeta,
-            fechaVencimiento: fechaVencimientoMySQL
+            FechaVencimiento: fechaVencimientoMySQL
         };
 
         const [id] = await db("tarjeta").insert(tarjetaParaBD);
