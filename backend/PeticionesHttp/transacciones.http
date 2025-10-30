@@ -24,7 +24,7 @@ Content-Type: application/json
 
 {
   "Descripcion": "Pago de servicios actualizado",
-  "Estado": "cancelado"
+  "Estado": "completado"
 }
 
 ###

@@ -117,37 +117,37 @@ export const transaccionRepository = {
         }
     },
 
-    async put(id, datos) {
-        const resultado = editarTransaccionSchema.parse(datos);
-        
-        if (!resultado.success) {
-            throw new Error(JSON.stringify(formatearErroresZod(resultado.error)));
-        }
+async put(id, datos) {
+    const resultado = editarTransaccionSchema.safeParse(datos);
+    
+    if (!resultado.success) {
+        throw new Error(JSON.stringify(formatearErroresZod(resultado.error)));
+    }
 
-        const { data } = resultado;
+    const { data } = resultado;
 
-        if (data.IdCuentaOrigen) {
-            await cuentaRepository.getId(data.idCuentaOrigen);
-        }
+    if (data.IdCuentaOrigen) {
+        await cuentaRepository.getId(data.IdCuentaOrigen);
+    }
 
-        if (data.idCuentaDestino) {
-            await cuentaRepository.getId(data.idCuentaDestino);
-        }
+    if (data.IdCuentaDestino) {
+        await cuentaRepository.getId(data.IdCuentaDestino);
+    }
 
-        if (data.fecha) {
-            data.fecha = new Date(data.fecha).toISOString().slice(0, 19).replace("T", " ");
-        }
+    if (data.Fecha) {
+        data.Fecha = new Date(data.Fecha).toISOString().slice(0, 19).replace("T", " ");
+    }
 
-        await db("transaccion").where({ IdTransaccion: id }).update(data);
+    await db("transaccion").where({ IdTransaccion: id }).update(data);
 
-        // 🔄 Si se cambia el estado a "completado", actualizar saldos
-        if (data.estado === "completado") {
-            const transaccion = await this.getId(id);
-            await this.actualizarSaldos(transaccion);
-        }
+    if (data.Estado === "completado") {
+        const transaccion = await this.getId(id);
+        await this.actualizarSaldos(transaccion);
+    }
 
-        return await this.getId(id);
-    },
+    return await this.getId(id);
+},
+
 
     async delete(id) {
         const transaccion = await db("transaccion").where({ IdTransaccion: id }).first();
