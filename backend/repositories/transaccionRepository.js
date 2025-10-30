@@ -6,31 +6,21 @@ import { cuentaRepository } from "./cuentaRepository.js";
 export const transaccionRepository = {
     async listar() {
         const transacciones = await db("transaccion")
-            .leftJoin("cuenta as origen", "transaccion.IdCuentaOrigen", "origen.IdCuenta")
-            .leftJoin("cuenta as destino", "transaccion.IdCuentaDestino", "destino.IdCuenta")
+            .join("cuenta as origen", "transaccion.IdCuentaOrigen", "origen.IdCuenta")
+            .join("cuenta as destino", "transaccion.IdCuentaDestino", "destino.IdCuenta")
             .select(
-                "transaccion.*",
-                "origen.CBU as CBUOrigen",
-                "destino.CBU as CBUDestino"
+                "*"
             );
 
         const showTransacciones = await Promise.all(
             transacciones.map(async (transaccion) => {
-                let cuentaOrigen = null;
-                let cuentaDestino = null;
-
-                if (transaccion.IdCuentaOrigen) {
-                    cuentaOrigen = await cuentaRepository.getId(transaccion.IdCuentaOrigen);
-                }
-
-                if (transaccion.IdCuentaDestino) {
-                    cuentaDestino = await cuentaRepository.getId(transaccion.IdCuentaDestino);
-                }
+                const cuentaOrigen = await cuentaRepository.getId(transaccion.IdCuentaOrigen);
+                const cuentaDestino = await cuentaRepository.getId(transaccion.IdCuentaDestino);
 
                 const transaccionCompleta = {
-                    ...transaccion,
-                    cuentaOrigen,
-                    cuentaDestino
+                  ...transaccion,
+                  cuentaOrigen,
+                  cuentaDestino,
                 };
 
                 return transaccionSchema.parse(transaccionCompleta);
@@ -46,9 +36,7 @@ export const transaccionRepository = {
             .leftJoin("cuenta as destino", "transaccion.IdCuentaDestino", "destino.IdCuenta")
             .where({ IdTransaccion: id })
             .select(
-                "transaccion.*",
-                "origen.CBU as CBUOrigen",
-                "destino.CBU as CBUDestino"
+                "*"
             )
             .first();
 
@@ -56,24 +44,18 @@ export const transaccionRepository = {
             throw new Error("No se encontró la transacción");
         }
 
-        let cuentaOrigen = null;
-        let cuentaDestino = null;
-
-        if (transaccion.IdCuentaOrigen) {
-            cuentaOrigen = await cuentaRepository.getId(transaccion.IdCuentaOrigen);
-        }
-
-        if (transaccion.IdCuentaDestino) {
-            cuentaDestino = await cuentaRepository.getId(transaccion.IdCuentaDestino);
-        }
+        const cuentaOrigen = await cuentaRepository.getId(transaccion.IdCuentaOrigen);
+        const cuentaDestino = await cuentaRepository.getId(transaccion.IdCuentaDestino);
 
         const transaccionCompleta = {
             ...transaccion,
             cuentaOrigen,
             cuentaDestino
         };
+        
+        const showTransaccion = transaccionSchema.parse(transaccionCompleta);
 
-        return transaccionSchema.parse(transaccionCompleta);
+        return showTransaccion;
     },
 
     async crear(datos) {
