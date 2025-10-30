@@ -1,0 +1,26 @@
+### Sucursales
+
+GET http://localhost:3000/sucursales
+
+GET http://localhost:3000/sucursales/4
+
+PUT http://localhost:3000/sucursales/4
+Content-Type: application/json
+
+{
+  "Estado": false 
+}
+
+POST http://localhost:3000/sucursales
+Content-Type: application/json
+
+{
+    "Nombre": "hola",
+    "Ciudad": "noway",
+    "Direccion": "Av libre Impuestos 256",
+    "Telefono": "12343542",
+    "Email": "sucursal2@gmail.com",
+    "Estado": true
+}
+
+DELETE http://localhost:3000/sucursales/3
