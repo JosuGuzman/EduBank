@@ -2,8 +2,9 @@
 
 GET http://localhost:3000/transacciones
 
+###
 GET http://localhost:3000/transacciones/1
-
+###
 POST http://localhost:3000/transacciones
 Content-Type: application/json
 
@@ -16,6 +17,7 @@ Content-Type: application/json
   "estado": "completado"
 }
 
+###
 PUT http://localhost:3000/transacciones/1
 Content-Type: application/json
 
@@ -24,4 +26,5 @@ Content-Type: application/json
   "estado": "cancelado"
 }
 
+###
 DELETE http://localhost:3000/transacciones/1
