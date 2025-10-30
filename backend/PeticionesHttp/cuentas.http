@@ -2,8 +2,10 @@
 
 GET http://localhost:3000/cuentas
 
+###
 GET http://localhost:3000/cuentas/1
 
+###
 POST http://localhost:3000/cuentas
 Content-Type: application/json
 
@@ -18,6 +20,7 @@ Content-Type: application/json
   "FechaApertura": "2025-10-29T14:30:00Z"
 }
 
+###
 PUT  http://localhost:3000/cuentas/4
 Content-Type: application/json
 
@@ -25,4 +28,5 @@ Content-Type: application/json
   "Alias": "Davis.Fondo.Mafia"
 }
 
-DELETE  http://localhost:3000/cuentas/2
+###
+DELETE  http://localhost:3000/cuentas/4
