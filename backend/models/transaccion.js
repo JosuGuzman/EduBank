@@ -1,5 +1,5 @@
 import { z } from "zod";
-import {cuentaSchema} from "./cuenta.js";
+import {crearCuentaSchema, cuentaSchema} from "./cuenta.js";
 
 export const transaccionSchema = z.object({
   idTransaccion: z
@@ -30,5 +30,33 @@ export const transaccionSchema = z.object({
     .default("completado"),
 });
 
-// Para crear una transacción nueva sin el id
-export const transaccionCreate = transaccionSchema.omit({ idTransaccion: true });
+
+export const CrearTransaccionSchema = z.object({
+  IdCuentaOrigen: z.number()
+		.int()
+		.positive({ message: "El id de la cuenta origen debe ser un número entero positivo" })
+		.nullable(),
+  IdCuentaDestino: z.number()
+		.int()
+		.positive({ message: "El id de la cuenta origen debe ser un número entero positivo" })
+		.nullable(),
+  Monto: z.coerce
+    .number({ invalid_type_error: "El monto debe ser un número" })
+    .positive({ message: "El monto debe ser mayor a 0" }),
+  Fecha: z.union([z.string().datetime(), z.date()]),
+  Tipo: z.enum(["deposito", "retiro", "transferencia", "pago"], {
+    errorMap: () => ({ message: "Tipo de transacción inválido" }),
+  }),
+  Descripcion: z
+    .string()
+    .max(255, { message: "La descripción no puede superar 255 caracteres" })
+    .nullable()
+    .optional(),
+  Estado: z
+    .enum(["pendiente", "completado", "cancelado"], {
+      errorMap: () => ({ message: "Estado inválido" }),
+    })
+    .default("completado"),
+});
+
+export const editarTransaccionSchema = CrearTransaccionSchema.partial();

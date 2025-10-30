@@ -1,5 +1,6 @@
 import db from "../db.js";
-import { transaccionSchema, transaccionCreate } from "../models/transaccion.js";
+import { editarCuentaSchema } from "../models/cuenta.js";
+import { transaccionSchema, CrearTransaccionSchema, editarTransaccionSchema} from "../models/transaccion.js";
 import { formatearErroresZod } from "../utils/staticFunctions.js";
 import { cuentaRepository } from "./cuentaRepository.js";
 
@@ -59,29 +60,20 @@ export const transaccionRepository = {
     },
 
     async crear(datos) {
-        const nuevaTransaccion = transaccionCreate.parse(datos);
+        const nuevaTransaccion = CrearTransaccionSchema.parse(datos);
 
-        // Validar que las cuentas existan si se proporcionan
-        if (nuevaTransaccion.idCuentaOrigen) {
-            await cuentaRepository.getId(nuevaTransaccion.idCuentaOrigen);
-        }
-
-        if (nuevaTransaccion.idCuentaDestino) {
-            await cuentaRepository.getId(nuevaTransaccion.idCuentaDestino);
-        }
-
-        const fechaMySQL = nuevaTransaccion.fecha 
-            ? new Date(nuevaTransaccion.fecha).toISOString().slice(0, 19).replace("T", " ")
-            : new Date().toISOString().slice(0, 19).replace("T", " ");
+        const fechaMySQL = new Date(nuevaTransaccion.Fecha)
+          .toISOString()
+          .slice(0, 19)
+          .replace("T", " ");
 
         const transaccionParaBD = {
             ...nuevaTransaccion,
-            fecha: fechaMySQL
+            Fecha: fechaMySQL
         };
 
         const [id] = await db("transaccion").insert(transaccionParaBD);
         
-        // 🔄 ACTUALIZAR SALDOS DE CUENTAS SI LA TRANSACCIÓN ES COMPLETADA
         if (nuevaTransaccion.estado === "completado") {
             await this.actualizarSaldos(nuevaTransaccion);
         }
@@ -126,7 +118,7 @@ export const transaccionRepository = {
     },
 
     async put(id, datos) {
-        const resultado = transaccionCreate.partial().safeParse(datos);
+        const resultado = editarTransaccionSchema.parse(datos);
         
         if (!resultado.success) {
             throw new Error(JSON.stringify(formatearErroresZod(resultado.error)));
@@ -134,8 +126,7 @@ export const transaccionRepository = {
 
         const { data } = resultado;
 
-        // Validar cuentas si se actualizan
-        if (data.idCuentaOrigen) {
+        if (data.IdCuentaOrigen) {
             await cuentaRepository.getId(data.idCuentaOrigen);
         }
 
@@ -143,7 +134,6 @@ export const transaccionRepository = {
             await cuentaRepository.getId(data.idCuentaDestino);
         }
 
-        // Formatear fecha si se actualiza
         if (data.fecha) {
             data.fecha = new Date(data.fecha).toISOString().slice(0, 19).replace("T", " ");
         }
