@@ -1,2 +1,2 @@
-SOURCE db.sql
-SOURCE insert.sql
+SOURCE /tmp/db.sql;
+SOURCE /tmp/insert.sql;

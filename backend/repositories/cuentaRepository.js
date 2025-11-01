@@ -6,11 +6,13 @@ import { sucursalRepository } from "./sucursalRepository.js";
 
 export const cuentaRepository = {
 	async listar() {
-		const cuentas = await db("cuenta")
-		.join("sucursal", "cuenta.IdSucursal", "sucursal.IdSucursal")
-		.join("usuario", "cuenta.IdUsuario", "usuario.IdUsuario")
-		.join("tipoCuenta", "cuenta.IdTipoCuenta", "tipoCuenta.IdTipoCuenta")
-		.select("*");
+		const cuentas = await db("Cuenta")
+		.join("Sucursal", "Cuenta.IdSucursal", "Sucursal.IdSucursal")
+		.join("Usuario", "Cuenta.IdUsuario", "Usuario.IdUsuario")
+		.join("TipoCuenta", "Cuenta.IdTipoCuenta", "TipoCuenta.IdTipoCuenta")
+		// .join("usuario", "cuenta.IdUsuario", "usuario.IdUsuario")
+		// .join("tipoCuenta", "cuenta.IdTipoCuenta", "tipoCuenta.IdTipoCuenta")
+		// .select("*");
 
 		const showCuentas = await Promise.all(
 			cuentas.map(async(cuenta) =>{

@@ -28,8 +28,8 @@ export const usuarioRepository = {
     },
 
     async getId(id){
-        const usuario = await db("usuario")
-            .join("sucursal", "usuario.IdSucursal", "sucursal.IdSucursal")
+        const usuario = await db("Usuario")
+            .join("Sucursal", "Usuario.IdSucursal", "Sucursal.IdSucursal")
             .where({ idUsuario: id }).first();
         if(!usuario){
             throw new Error("no se encontro el usuario");

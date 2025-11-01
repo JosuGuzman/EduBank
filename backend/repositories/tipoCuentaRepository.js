@@ -4,10 +4,10 @@ import { formatearErroresZod } from "../utils/staticFunctions.js";
 
 export const tipoCuentaRepository = {
 	async listar() {
-		return await db("tipoCuenta").select("*");
+		return await db("TipoCuenta").select("*");
 	},
     async getId(id){
-        const tipoCuenta = await db("tipoCuenta").where({ idTipoCuenta: id }).first();
+        const tipoCuenta = await db("TipoCuenta").where({ idTipoCuenta: id }).first();
         if(!tipoCuenta){
             throw new Error("no se encontro el tipo de cuenta");
         }
@@ -17,7 +17,7 @@ export const tipoCuentaRepository = {
     async crear(datos){
         const nuevaTipoCuenta = crearTipoCuentaSchema.parse(datos);
 
-        await db("tipoCuenta").insert(nuevaTipoCuenta);
+        await db("TipoCuenta").insert(nuevaTipoCuenta);
 
         return { nuevaTipoCuenta};
     },
