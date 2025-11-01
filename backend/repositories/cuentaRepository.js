@@ -34,10 +34,10 @@ export const cuentaRepository = {
 
 	},
 	async getId(id){
-		const cuenta = await db("cuenta")
-		.join("sucursal", "cuenta.IdSucursal", "sucursal.IdSucursal")
-		.join("usuario", "cuenta.IdUsuario", "usuario.IdUsuario")
-		.join("tipoCuenta", "cuenta.IdTipoCuenta", "tipoCuenta.IdTipoCuenta")
+		const cuenta = await db("Cuenta")
+		.join("Sucursal", "Cuenta.IdSucursal", "Sucursal.IdSucursal")
+		.join("Usuario", "Cuenta.IdUsuario", "Usuario.IdUsuario")
+		.join("TipoCuenta", "Cuenta.IdTipoCuenta", "TipoCuenta.IdTipoCuenta")
 		.where({idCuenta: id})
 		.first()
 		if(!cuenta){
@@ -67,9 +67,9 @@ export const cuentaRepository = {
 			FechaApertura: fechaMySQL
 		}
 
-		const [IdCuenta] = await db("cuenta").insert(CuentaAcrear);
+		const [IdCuenta] = await db("Cuenta").insert(CuentaAcrear);
 		
-		const cuentaShow = await db("cuenta").where({ IdCuenta }).first();
+		const cuentaShow = await db("Cuenta").where({ IdCuenta }).first();
 		
 		return cuentaShow;
 	},
@@ -98,13 +98,13 @@ export const cuentaRepository = {
 			}
 		}
 
-		await db("cuenta").where({ idCuenta: id }).update(data);
+		await db("Cuenta").where({ idCuenta: id }).update(data);
 
-		const cuentaActualizada = await db("cuenta").where({ idCuenta: id }).first();
+		const cuentaActualizada = await db("Cuenta").where({ idCuenta: id }).first();
 		return cuentaActualizada;
 	},
 	async delete(id) {
-		const cuentaAeliminar = await db("cuenta")
+		const cuentaAeliminar = await db("Cuenta")
 			.where({ idCuenta: Number(id) })
 			.first();
 
@@ -112,7 +112,7 @@ export const cuentaRepository = {
 			throw new Error("No se encontró la cuenta");
 		}
 
-		await db("cuenta").where({ idCuenta: Number(id) }).delete();
+		await db("Cuenta").where({ idCuenta: Number(id) }).delete();
 
 		return { ...cuentaAeliminar }; // devuelve objeto plano
 	}

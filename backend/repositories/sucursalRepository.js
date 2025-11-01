@@ -4,7 +4,7 @@ import { formatearErroresZod } from "../utils/staticFunctions.js";
 
 export const sucursalRepository = {
 	async listar() {
-		return await db("sucursal").select("*");
+		return await db("Sucursal").select("*");
 	},
 	async getId(id){
 		const sucursal = await db("Sucursal").where({ idSucursal: id }).first();

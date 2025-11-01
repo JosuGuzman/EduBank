@@ -27,17 +27,17 @@ export const tipoCuentaRepository = {
             throw new Error(JSON.stringify(formatearErroresZod(resultado.error)));
         }
         const { data } = resultado;
-        await db("tipoCuenta").where({ idTipoCuenta: id }).update(data);
-        const tipoCuentaUpdate = await db("tipoCuenta").where({ idTipoCuenta: id }).first();
+        await db("TipoCuenta").where({ idTipoCuenta: id }).update(data);
+        const tipoCuentaUpdate = await db("TipoCuenta").where({ idTipoCuenta: id }).first();
         return { ...tipoCuentaUpdate};
     },
     async delete(id){
-        const tipoCuenta = await db("tipoCuenta").where({ idTipoCuenta: id }).first();
+        const tipoCuenta = await db("TipoCuenta").where({ idTipoCuenta: id }).first();
 
         if (!tipoCuenta) {
             throw new Error("El tipo de cuenta no existe");
         }
-        await db("tipoCuenta").where({ idTipoCuenta: id }).delete();
+        await db("TipoCuenta").where({ idTipoCuenta: id }).delete();
         return tipoCuenta;
     }
 };

@@ -5,8 +5,8 @@ import { cuentaRepository } from "./cuentaRepository.js";
 
 export const tarjetaRepository = {
     async listar() {
-        const tarjetas = await db("tarjeta")
-            .join("cuenta", "tarjeta.IdCuenta", "cuenta.IdCuenta")
+        const tarjetas = await db("Tarjeta")
+            .join("Cuenta", "Tarjeta.IdCuenta", "Cuenta.IdCuenta")
             .select("*");
 
         const showTarjetas = await Promise.all(
@@ -26,8 +26,8 @@ export const tarjetaRepository = {
     },
 
     async getId(id) {
-        const tarjeta = await db("tarjeta")
-            .join("cuenta", "tarjeta.IdCuenta", "cuenta.IdCuenta")
+        const tarjeta = await db("Tarjeta")
+            .join("Cuenta", "Tarjeta.IdCuenta", "Cuenta.IdCuenta")
             .where({ IdTarjeta: id })
             .select("*")
             .first();
@@ -60,7 +60,7 @@ export const tarjetaRepository = {
             FechaVencimiento: fechaVencimientoMySQL
         };
 
-        const [id] = await db("tarjeta").insert(tarjetaParaBD);
+        const [id] = await db("Tarjeta").insert(tarjetaParaBD);
         return await this.getId(id);
     },
 
@@ -83,23 +83,23 @@ export const tarjetaRepository = {
             data.fechaVencimiento = new Date(data.fechaVencimiento).toISOString().slice(0, 10);
         }
 
-        await db("tarjeta").where({ IdTarjeta: id }).update(data);
+        await db("Tarjeta").where({ IdTarjeta: id }).update(data);
         return await this.getId(id);
     },
 
     async delete(id) {
-        const tarjeta = await db("tarjeta").where({ IdTarjeta: id }).first();
+        const tarjeta = await db("Tarjeta").where({ IdTarjeta: id }).first();
         
         if (!tarjeta) {
             throw new Error("La tarjeta no existe");
         }
 
-        await db("tarjeta").where({ IdTarjeta: id }).delete();
+        await db("Tarjeta").where({ IdTarjeta: id }).delete();
         return tarjeta;
     },
 
     async listarPorCuenta(idCuenta) {
-        const tarjetas = await db("tarjeta")
+        const tarjetas = await db("Tarjeta")
             .where({ IdCuenta: idCuenta })
             .select("*");
 

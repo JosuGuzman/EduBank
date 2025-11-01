@@ -6,8 +6,8 @@ import bcrypt from "bcrypt";
 
 export const usuarioRepository = {
     async getAll() {
-        const usuarios = await db("usuario")
-            .join("sucursal", "usuario.IdSucursal", "sucursal.IdSucursal")
+        const usuarios = await db("Usuario")
+            .join("Sucursal", "Usuario.IdSucursal", "Sucursal.IdSucursal")
             .select("*");
 
         const showUsuarios = await Promise.all(
@@ -56,7 +56,7 @@ export const usuarioRepository = {
             PasswordHash: hashedPassword
         };
         
-        await db("usuario").insert(nuevoUsuarioParaBd);
+        await db("Usuario").insert(nuevoUsuarioParaBd);
 
         const sucursal = await sucursalRepository.getId(nuevoUsuario.IdSucursal);
 
@@ -74,16 +74,16 @@ export const usuarioRepository = {
             throw new Error(JSON.stringify(formatearErroresZod(resultado.error)));
         }
         const { data } = resultado;
-        await db("usuario").where({ idUsuario: id }).update(data);
-        const usuarioUpdate = await db("usuario").where({ idUsuario: id }).first();
+        await db("Usuario").where({ idUsuario: id }).update(data);
+        const usuarioUpdate = await db("Usuario").where({ idUsuario: id }).first();
         return { ...usuarioUpdate, ...data };
     },
     async delete(id){
-        const usuario = await db("usuario").where({ idUsuario: id }).first();
+        const usuario = await db("Usuario").where({ idUsuario: id }).first();
         if (!usuario) {
             throw new Error("El usuario no existe");
         }
-        await db("usuario").where({ idUsuario: id }).delete();
+        await db("Usuario").where({ idUsuario: id }).delete();
         return usuario;
     }
 }
