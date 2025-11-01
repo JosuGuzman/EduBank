@@ -1,0 +1,29 @@
+### TipoCuentas
+
+GET http://localhost:3000/tiposCuentas
+
+###
+GET http://localhost:3000/tiposCuentas/2
+
+###
+POST http://localhost:3000/tiposCuentas
+Content-Type: application/json
+
+{
+  "Nombre": "Caja empresarial",
+  "Descripcion": "No hay intereses",
+  "PermiteCredito": true,
+  "Moneda": "ARS",
+  "TasaInteres": 0
+}
+
+###
+PUT http://localhost:3000/tiposCuentas/3
+Content-Type: application/json
+
+{
+  "Nombre": "Caja Sin interes"
+}
+
+###
+DELETE http://localhost:3000/tiposCuentas/3

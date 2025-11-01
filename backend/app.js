@@ -8,6 +8,8 @@ import sucursalRoutes from "./routes/sucursalesRoutes.js";
 import tipoCuentaRoutes from "./routes/tipoCuentaRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import transaccionRoutes from "./routes/transaccionRoutes.js";
+import tarjetaRoutes from "./routes/tarjetaRoutes.js";
+import prestamoRoutes from "./routes/prestamoRoutes.js";
 
 
 dotenv.config();
@@ -25,6 +27,8 @@ app.use("/sucursales", sucursalRoutes);
 app.use("/tiposCuentas", tipoCuentaRoutes);
 app.use("/usuarios", usuarioRoutes);
 app.use("/transacciones", transaccionRoutes);
+app.use("/tarjetas", tarjetaRoutes);
+app.use("/pretamos", prestamoRoutes);
 
 app.get("/", (req, res) => {
     res.send("Servidor bancario activo ✅");

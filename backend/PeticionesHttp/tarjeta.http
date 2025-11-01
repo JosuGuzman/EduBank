@@ -1,0 +1,20 @@
+GET http://localhost:3000/tarjetas
+
+
+###
+GET http://localhost:3000/tarjetas/1
+
+###
+
+POST http://localhost:3000/tarjetas
+Content-Type: application/json
+
+{
+    "IdCuenta":1,
+    "NumeroTarjeta": "4555555544443322",
+    "FecaVencimiento": "2028-12-31",
+    "CVV": "789",
+    "Tipo": "debito",
+    "LimiteCredito": 0
+
+}

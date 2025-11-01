@@ -24,7 +24,12 @@ Este proyecto es un Sistema Bancario Backend desarrollado con Node.js y Express 
 - Auditoría de operaciones
 - Notificaciones a usuarios
 
+```shell
+ mysql --default-character-set=utf8mb4 -u mysql-user -p
+```
+
 <h3 align="center"> Diagrama de clases del Proyecto </h3>
+
 
 ```mermaid
 erDiagram
