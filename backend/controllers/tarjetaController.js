@@ -47,7 +47,7 @@ export const tarjetaController = {
         try {
             const { id } = req.params;
             const tarjetaActualizada = await tarjetaRepository.put(id, req.body);
-            res.json(tarjetaActualizada);
+            return res.status(200).json(tarjetaActualizada);
         } catch (error) {
             console.error("Error en tarjetaController.put:", error);
             

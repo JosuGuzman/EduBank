@@ -1,5 +1,5 @@
 import db from "../db.js";
-import { tarjetaSchema, crearTarjetaSchema } from "../models/tarjeta.js";
+import { tarjetaSchema, crearTarjetaSchema, editarTarjetaSchema } from "../models/tarjeta.js";
 import { formatearErroresZod } from "../utils/staticFunctions.js";
 import { cuentaRepository } from "./cuentaRepository.js";
 
@@ -65,7 +65,7 @@ export const tarjetaRepository = {
     },
 
     async put(id, datos) {
-        const resultado = crearTarjeta.partial().safeParse(datos);
+        const resultado = editarTarjetaSchema.safeParse(datos);
         
         if (!resultado.success) {
             throw new Error(JSON.stringify(formatearErroresZod(resultado.error)));
@@ -79,8 +79,8 @@ export const tarjetaRepository = {
         }
 
         // Formatear fecha si se actualiza
-        if (data.fechaVencimiento) {
-            data.fechaVencimiento = new Date(data.fechaVencimiento).toISOString().slice(0, 10);
+        if (data.FechaVencimiento) {
+            data.FechaVencimiento = new Date(data.FechaVencimiento).toISOString().slice(0, 10);
         }
 
         await db("Tarjeta").where({ IdTarjeta: id }).update(data);

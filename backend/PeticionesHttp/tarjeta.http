@@ -19,3 +19,15 @@ Content-Type: application/json
   "SaldoDisponible": 0,
   "Activa": true
 }
+
+###
+PUT http://localhost:3000/tarjetas/2
+Content-Type: application/json
+
+{
+  "LimiteCredito": 100,
+  "Tipo": "credito"
+}
+
+###
+DELETE http://localhost:3000/tarjetas/2
