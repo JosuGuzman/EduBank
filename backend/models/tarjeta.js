@@ -141,3 +141,5 @@ export const crearTarjetaSchema = z
       path: ["SaldoDisponible"],
     }
   );
+
+export const editarTarjetaSchema = crearTarjetaSchema.partial();

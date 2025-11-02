@@ -5,9 +5,9 @@ import { usuarioRepository } from "./usuarioRepository.js";
 
 export const prestamoRepository = {
     async listar() {
-        const prestamos = await db("prestamo")
-            .join("usuario", "prestamo.IdUsuario", "usuario.IdUsuario")
-            .select("prestamo.*", "usuario.Nombre", "usuario.DNI");
+        const prestamos = await db("Prestamo")
+            .join("Usuario", "Prestamo.IdUsuario", "Usuario.IdUsuario")
+            .select("Prestamo.*", "Usuario.Nombre", "Usuario.DNI");
 
         const showPrestamos = await Promise.all(
             prestamos.map(async (prestamo) => {
@@ -26,10 +26,10 @@ export const prestamoRepository = {
     },
 
     async getId(id) {
-        const prestamo = await db("prestamo")
-            .join("usuario", "prestamo.IdUsuario", "usuario.IdUsuario")
+        const prestamo = await db("Prestamo")
+            .join("Usuario", "Prestamo.IdUsuario", "Usuario.IdUsuario")
             .where({ IdPrestamo: id })
-            .select("prestamo.*", "usuario.Nombre", "usuario.DNI")
+            .select("*")
             .first();
 
         if (!prestamo) {
@@ -76,7 +76,7 @@ export const prestamoRepository = {
             fechaFin: fechaFinMySQL
         };
 
-        const [id] = await db("prestamo").insert(prestamoParaBD);
+        const [id] = await db("Prestamo").insert(prestamoParaBD);
         return await this.getId(id);
     },
 
@@ -103,7 +103,7 @@ export const prestamoRepository = {
 
         // Recalcular cuota si cambian monto, tasa o plazo
         if (data.monto || data.tasaInteres || data.plazoMeses) {
-            const prestamoActual = await db("prestamo").where({ IdPrestamo: id }).first();
+            const prestamoActual = await db("Prestamo").where({ IdPrestamo: id }).first();
             const monto = data.monto || prestamoActual.Monto;
             const tasa = data.tasaInteres || prestamoActual.TasaInteres;
             const plazo = data.plazoMeses || prestamoActual.PlazoMeses;

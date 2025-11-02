@@ -3,6 +3,8 @@
 GET http://localhost:3000/usuarios
 ###
 GET http://localhost:3000/usuarios/2
+
+
 ###
 PUT http://localhost:3000/usuarios/2
 Content-Type: application/json
@@ -11,6 +13,7 @@ Content-Type: application/json
   "Nombre": "Calor"
 }
 
+###
 POST http://localhost:3000/usuarios
 Content-Type: application/json
 
@@ -24,7 +27,7 @@ Content-Type: application/json
   "FechaAlta": "2025-10-28T10:00:00.000Z",
   "Activo": true,
   "PasswordHash": "123",
-  "IdSucursal": 4
+  "IdSucursal": 1
 }
-
+###
 DELETE http://localhost:3000/usuarios/3

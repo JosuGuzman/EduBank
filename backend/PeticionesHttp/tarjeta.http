@@ -10,11 +10,24 @@ POST http://localhost:3000/tarjetas
 Content-Type: application/json
 
 {
-    "IdCuenta":1,
-    "NumeroTarjeta": "4555555544443322",
-    "FecaVencimiento": "2028-12-31",
-    "CVV": "789",
-    "Tipo": "debito",
-    "LimiteCredito": 0
-
+  "IdCuenta": 1,
+  "NumeroTarjeta": "4555555544443322",
+  "FechaVencimiento": "2028-12-31",
+  "CVV": "789",
+  "Tipo": "debito",
+  "LimiteCredito": 0,
+  "SaldoDisponible": 0,
+  "Activa": true
 }
+
+###
+PUT http://localhost:3000/tarjetas/2
+Content-Type: application/json
+
+{
+  "LimiteCredito": 100,
+  "Tipo": "credito"
+}
+
+###
+DELETE http://localhost:3000/tarjetas/2

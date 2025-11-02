@@ -6,9 +6,9 @@ import { cuentaRepository } from "./cuentaRepository.js";
 
 export const transaccionRepository = {
     async listar() {
-        const transacciones = await db("transaccion")
-            .join("cuenta as origen", "transaccion.IdCuentaOrigen", "origen.IdCuenta")
-            .join("cuenta as destino", "transaccion.IdCuentaDestino", "destino.IdCuenta")
+        const transacciones = await db("Transaccion")
+            .join("Cuenta as origen", "Transaccion.IdCuentaOrigen", "origen.IdCuenta")
+            .join("Cuenta as destino", "Transaccion.IdCuentaDestino", "destino.IdCuenta")
             .select(
                 "*"
             );
@@ -32,9 +32,9 @@ export const transaccionRepository = {
     },
 
     async getId(id) {
-        const transaccion = await db("transaccion")
-            .leftJoin("cuenta as origen", "transaccion.IdCuentaOrigen", "origen.IdCuenta")
-            .leftJoin("cuenta as destino", "transaccion.IdCuentaDestino", "destino.IdCuenta")
+        const transaccion = await db("Transaccion")
+            .leftJoin("Cuenta as origen", "Transaccion.IdCuentaOrigen", "origen.IdCuenta")
+            .leftJoin("Cuenta as destino", "Transaccion.IdCuentaDestino", "destino.IdCuenta")
             .where({ IdTransaccion: id })
             .select(
                 "*"
@@ -72,7 +72,7 @@ export const transaccionRepository = {
             Fecha: fechaMySQL
         };
 
-        const [id] = await db("transaccion").insert(transaccionParaBD);
+        const [id] = await db("Transaccion").insert(transaccionParaBD);
         
         if (nuevaTransaccion.estado === "completado") {
             await this.actualizarSaldos(nuevaTransaccion);
@@ -87,7 +87,7 @@ export const transaccionRepository = {
         switch (tipo) {
             case "deposito":
                 if (idCuentaDestino) {
-                    await db("cuenta")
+                    await db("Cuenta")
                         .where({ IdCuenta: idCuentaDestino })
                         .increment("Saldo", monto);
                 }
@@ -95,7 +95,7 @@ export const transaccionRepository = {
 
             case "retiro":
                 if (idCuentaOrigen) {
-                    await db("cuenta")
+                    await db("Cuenta")
                         .where({ IdCuenta: idCuentaOrigen })
                         .decrement("Saldo", monto);
                 }
@@ -104,11 +104,11 @@ export const transaccionRepository = {
             case "transferencia":
                 if (idCuentaOrigen && idCuentaDestino) {
                     await db.transaction(async (trx) => {
-                        await trx("cuenta")
+                        await trx("Cuenta")
                             .where({ IdCuenta: idCuentaOrigen })
                             .decrement("Saldo", monto);
 
-                        await trx("cuenta")
+                        await trx("Cuenta")
                             .where({ IdCuenta: idCuentaDestino })
                             .increment("Saldo", monto);
                     });
@@ -138,7 +138,7 @@ async put(id, datos) {
         data.Fecha = new Date(data.Fecha).toISOString().slice(0, 19).replace("T", " ");
     }
 
-    await db("transaccion").where({ IdTransaccion: id }).update(data);
+    await db("Transaccion").where({ IdTransaccion: id }).update(data);
 
     if (data.Estado === "completado") {
         const transaccion = await this.getId(id);
@@ -150,7 +150,7 @@ async put(id, datos) {
 
 
     async delete(id) {
-        const transaccion = await db("transaccion").where({ IdTransaccion: id }).first();
+        const transaccion = await db("Transaccion").where({ IdTransaccion: id }).first();
         
         if (!transaccion) {
             throw new Error("La transacción no existe");
@@ -161,7 +161,7 @@ async put(id, datos) {
             await this.revertirSaldos(transaccion);
         }
 
-        await db("transaccion").where({ IdTransaccion: id }).delete();
+        await db("Transaccion").where({ IdTransaccion: id }).delete();
         
         return transaccion;
     },
@@ -172,7 +172,7 @@ async put(id, datos) {
         switch (Tipo) {
             case "deposito":
                 if (IdCuentaDestino) {
-                    await db("cuenta")
+                    await db("Cuenta")
                         .where({ IdCuenta: IdCuentaDestino })
                         .decrement("Saldo", Monto);
                 }
@@ -180,7 +180,7 @@ async put(id, datos) {
 
             case "retiro":
                 if (IdCuentaOrigen) {
-                    await db("cuenta")
+                    await db("Cuenta")
                         .where({ IdCuenta: IdCuentaOrigen })
                         .increment("Saldo", Monto);
                 }
@@ -189,11 +189,11 @@ async put(id, datos) {
             case "transferencia":
                 if (IdCuentaOrigen && IdCuentaDestino) {
                     await db.transaction(async (trx) => {
-                        await trx("cuenta")
+                        await trx("Cuenta")
                             .where({ IdCuenta: IdCuentaOrigen })
                             .increment("Saldo", Monto);
 
-                        await trx("cuenta")
+                        await trx("Cuenta")
                             .where({ IdCuenta: IdCuentaDestino })
                             .decrement("Saldo", Monto);
                     });
