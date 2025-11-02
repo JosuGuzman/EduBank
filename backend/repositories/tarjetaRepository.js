@@ -50,7 +50,7 @@ export const tarjetaRepository = {
         const nuevaTarjeta = crearTarjetaSchema.parse(datos);
 
         // Formatear fecha de vencimiento
-        const fechaVencimientoMySQL = new Date(nuevoUsuario.FechaAlta)
+        const fechaVencimientoMySQL = new Date(nuevaTarjeta.FechaVencimiento)
           .toISOString()
           .slice(0, 19)
           .replace("T", " ");

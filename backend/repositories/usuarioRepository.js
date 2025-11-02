@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 export const usuarioRepository = {
     async getAll() {
         const usuarios = await db("Usuario")
-            .join("Sucursal", "Usuario.IdSucursal", "Sucursal.IdSucursal")
             .select("*");
 
         const showUsuarios = await Promise.all(
@@ -29,8 +28,8 @@ export const usuarioRepository = {
 
     async getId(id){
         const usuario = await db("Usuario")
-            .join("Sucursal", "Usuario.IdSucursal", "Sucursal.IdSucursal")
-            .where({ idUsuario: id }).first();
+            .where({ idUsuario: id }).first()
+            .select("Usuario.*");
         if(!usuario){
             throw new Error("no se encontro el usuario");
         }

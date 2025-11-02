@@ -3,14 +3,14 @@
 GET http://localhost:3000/sucursales
 
 ###
-GET http://localhost:3000/sucursales/4
+GET http://localhost:3000/sucursales/2
 
 ###
-PUT http://localhost:3000/sucursales/4
+PUT http://localhost:3000/sucursales/1
 Content-Type: application/json
 
 {
-  "Estado": false 
+  "Estado": true 
 }
 
 
@@ -27,4 +27,4 @@ Content-Type: application/json
     "Estado": true
 }
 ###
-DELETE http://localhost:3000/sucursales/3
+DELETE http://localhost:3000/sucursales/2

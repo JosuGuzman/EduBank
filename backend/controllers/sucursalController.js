@@ -11,18 +11,18 @@ export const sucursalController = {
             res.json(sucursales);
         } catch (error) {
             console.error("Error en sucursalController.listar:", error);
-            res.status(500).json({ message: "Error al obtener sucursales" });
+            return res.status(500).json({ message: "Error al obtener sucursales" });
         }
     },
     async getId(req,res){
         try{
             const {id} = req.params;
             const sucursal = await sucursalRepository.getId(id);
-            res.json(sucursal);
+            return res.json(sucursal);
         }
-        catch{
+        catch(error){
             console.error("Error en sucursalController.getId:", error);
-            res.status(500).json({ message: "Error al obtener la sucursal" });
+            return res.status(500).json({ message: "Error al obtener la sucursal" });
         }
     }, 
     async crear(req,res){
