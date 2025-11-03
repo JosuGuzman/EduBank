@@ -28,7 +28,7 @@ app.use("/tiposCuentas", tipoCuentaRoutes);
 app.use("/usuarios", usuarioRoutes);
 app.use("/transacciones", transaccionRoutes);
 app.use("/tarjetas", tarjetaRoutes);
-app.use("/pretamos", prestamoRoutes);
+app.use("/prestamos", prestamoRoutes);
 
 app.get("/", (req, res) => {
     res.send("Servidor bancario activo ✅");

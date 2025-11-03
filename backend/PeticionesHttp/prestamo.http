@@ -1,0 +1,30 @@
+GET http://localhost:3000/prestamos
+
+###
+GET http://localhost:3000/prestamos/1
+
+###
+POST http://localhost:3000/prestamos
+Content-Type: application/json
+
+{
+  "IdUsuario": 2,
+  "Monto": 200000.00,
+  "TasaInteres": 10.50,
+  "PlazoMeses": 24,
+  "Estado": "aprobado",
+  "FechaInicio": "2025-10-28T10:00:00.000Z",
+  "FechaFin": "2025-10-28T10:00:00.000Z",
+  "CuotaMensual": 9458.00
+}
+
+###
+PUT http://localhost:3000/prestamos/2
+Content-Type: application/json
+
+{
+  "Estado": "cancelado"
+}
+
+###
+DELETE http://localhost:3000/prestamos/2

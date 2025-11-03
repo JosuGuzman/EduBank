@@ -2,50 +2,58 @@ import { z } from "zod";
 import { usuarioSchema } from "./usuario.js";
 
 export const prestamoSchema = z.object({
-	idPrestamo: z
+	IdPrestamo: z
 		.number({
 			invalid_type_error: "El ID del préstamo debe ser un número",
 		})
 		.optional(), // auto-incremental en la DB
-	monto: z
-		.number({
-			required_error: "El monto es obligatorio",
-			invalid_type_error: "El monto debe ser un número",
-		})
-		.positive({ message: "El monto debe ser positivo" }),
-	tasaInteres: z
-		.number({
-			required_error: "La tasa de interés es obligatoria",
-			invalid_type_error: "La tasa de interés debe ser un número",
-		})
-		.min(0, { message: "La tasa de interés no puede ser negativa" })
-		.max(100, { message: "La tasa de interés no puede superar 100%" }),
-	plazoMeses: z
+	Monto: z.coerce
+      .number({
+        invalid_type_error: "El monto debe ser un número",
+      })
+      .nonnegative({ message: "El monto no puede ser negativo" }),
+
+	TasaInteres: z.coerce
+      .number({
+        invalid_type_error: "El monto debe ser un número",
+      })
+      .nonnegative({ message: "El monto no puede ser negativo" })
+	  .min(0, { message: "La tasa de interés no puede ser negativa" })
+      .max(100, { message: "La tasa de interés no puede superar 100%" }),
+	PlazoMeses: z
 		.number({
 			required_error: "El plazo en meses es obligatorio",
 			invalid_type_error: "El plazo debe ser un número entero",
 		})
 		.int({ message: "El plazo debe ser un número entero" })
 		.positive({ message: "El plazo debe ser positivo" }),
-	fechaInicio: z.coerce.date({
+	FechaInicio: z.coerce.date({
 		invalid_type_error: "La fecha de inicio debe ser una fecha válida",
 	}),
-	fechaFin: z.coerce
+	FechaFin: z.coerce
 		.date({
 			invalid_type_error: "La fecha de fin debe ser una fecha válida",
 		})
 		.nullable(),
-	estado: z
+	Estado: z
 		.enum(["pendiente", "aprobado", "rechazado", "cancelado", "pagado"], {
-			errorMap: () => ({ message: "Estado de préstamo inválido" }),
+			errorMap: () => ({ message: "Estado de préstamo inválido " }),
 		})
 		.default("pendiente"),
-	cuotaMensual: z
+	CuotaMensual: z.coerce
+      .number({
+        invalid_type_error: "El monto debe ser un número",
+      })
+      .nonnegative({ message: "El monto no puede ser negativo" }),
+	usuario: usuarioSchema.optional(), 
+	IdUsuario: z
 		.number({
-			invalid_type_error: "La cuota mensual debe ser un número",
+			invalid_type_error: "El ID del usuario debe ser un numero",
 		})
-		.nullable(),
-	usuario: usuarioSchema.optional(), // Relación con el usuario
+		.positive({ message: "El ID del usuario debe ser mayor a 0" })
+		.optional()
 });
 
-export const crearPrestamo = prestamoSchema.omit({ idPrestamo: true });
+export const crearPrestamo = prestamoSchema.omit({ IdPrestamo: true , usuario: true });
+
+export const modificarPrestamo = crearPrestamo.partial();

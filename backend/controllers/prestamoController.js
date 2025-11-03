@@ -4,7 +4,7 @@ export const prestamoController = {
     async listar(req, res) {
         try {
             const prestamos = await prestamoRepository.listar();
-            res.json(prestamos);
+            return res.status(200).json(prestamos);
         } catch (error) {
             console.error("Error en prestamoController.listar:", error);
             res.status(500).json({ message: "Error al obtener préstamos" });
@@ -15,17 +15,24 @@ export const prestamoController = {
         try {
             const { id } = req.params;
             const prestamo = await prestamoRepository.getId(id);
-            res.json(prestamo);
+            return res.status(200).json(prestamo);
         } catch (error) {
-            console.error("Error en prestamoController.getId:", error);
-            res.status(500).json({ message: "Error al obtener el préstamo" });
+            console.error("Error en prestamoController.put:", error);
+            
+            let errores = {};
+            try {
+                errores = JSON.parse(error.message);
+            } catch {
+                errores.general = error.message;
+            }
+            return res.status(400).json({ errores });
         }
     },
 
     async crear(req, res) {
         try {
             const nuevoPrestamo = await prestamoRepository.crear(req.body);
-            res.status(201).json(nuevoPrestamo);
+            return res.status(201).json(nuevoPrestamo);
         } catch (error) {
             console.error("Error en prestamoController.crear:", error);
             
@@ -57,7 +64,7 @@ export const prestamoController = {
             } catch {
                 errores.general = error.message;
             }
-            res.status(400).json({ errores });
+            return res.status(400).json({ errores });
         }
     },
 
@@ -74,29 +81,4 @@ export const prestamoController = {
             res.status(500).json({ message: "Error al eliminar el préstamo" });
         }
     },
-
-    async listarPorUsuario(req, res) {
-        try {
-            const { idUsuario } = req.params;
-            const prestamos = await prestamoRepository.listarPorUsuario(idUsuario);
-            res.json(prestamos);
-        } catch (error) {
-            console.error("Error en prestamoController.listarPorUsuario:", error);
-            res.status(500).json({ message: "Error al obtener préstamos del usuario" });
-        }
-    },
-
-    async aprobar(req, res) {
-        try {
-            const { id } = req.params;
-            const prestamo = await prestamoRepository.aprobarPrestamo(id);
-            res.json({ 
-                message: "Préstamo aprobado correctamente", 
-                prestamo 
-            });
-        } catch (error) {
-            console.error("Error en prestamoController.aprobar:", error);
-            res.status(500).json({ message: "Error al aprobar el préstamo" });
-        }
-    }
 };
