@@ -2,7 +2,7 @@ import { z } from "zod";
 import { sucursalSchema } from "./sucursal.js";
 
 export const usuarioSchema = z.object({
-	idUsuario: z
+	IdUsuario: z
 		.number({
 			invalid_type_error: "El ID del usuario debe ser un numero",
 		})

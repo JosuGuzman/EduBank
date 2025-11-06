@@ -4,6 +4,8 @@ import { sucursalRepository } from "./sucursalRepository.js";
 import { formatearErroresZod } from "../utils/staticFunctions.js";
 import bcrypt from "bcrypt";
 
+
+
 export const usuarioRepository = {
     async getAll() {
         const usuarios = await db("Usuario")
@@ -55,12 +57,14 @@ export const usuarioRepository = {
             PasswordHash: hashedPassword
         };
         
-        await db("Usuario").insert(nuevoUsuarioParaBd);
+        const [id] = await db("Usuario").insert(nuevoUsuarioParaBd);
 
         const sucursal = await sucursalRepository.getId(nuevoUsuario.IdSucursal);
 
+        const usuarioCreado = await this.getId(id)
+
         const nuevoUsuarioConSucursal = {
-            ...nuevoUsuario,
+            ...usuarioCreado,
             sucursal,
         };
 

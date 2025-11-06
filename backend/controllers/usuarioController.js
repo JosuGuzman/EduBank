@@ -1,4 +1,10 @@
 import { usuarioRepository } from "../repositories/usuarioRepository.js";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+
+dotenv.config();
+
+const SECRET_KEY = process.env.SECRET_KEY;
 
 export const usuarioController = {
     listar: async (req, res) => {
@@ -21,7 +27,29 @@ export const usuarioController = {
     crear: async(req,res) => {
         try{
             const nuevoUsuario = await usuarioRepository.crear(req.body);
-            res.status(201).json(nuevoUsuario);
+
+            const payload = {
+                id_usuario : nuevoUsuario.showUsuario.IdUsuario,
+                nivel_acceso: nuevoUsuario.showUsuario.Rol,
+                email: nuevoUsuario.showUsuario.Email
+
+            }
+
+            const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+
+            return res
+                .cookie("access_token", token, {
+                  httpOnly: true,
+                  sameSite: "strict",
+                  maxAge: 1000 * 60 * 60,
+                })
+                .status(200)
+                .header("Authorization", `Bearer ${token}`)
+                .json({
+                  message: "Login exitoso",
+                  usuario: nuevoUsuario,
+                  token: token,
+                });
         }
         catch(error){
             res.status(500).json({ error: error.message });
