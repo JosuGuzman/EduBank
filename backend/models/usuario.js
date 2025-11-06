@@ -59,3 +59,8 @@ export const usuarioInputSchema = z.object({
 });
 
 export const editarUsuarioSchema = usuarioInputSchema.partial();
+
+export const usuarioLoginSchema = z.object({
+	Email: z.string().email({message:"Debe ser un email valido"}),
+	PasswordHash: z.string({ required_error: "La contraseña es obligatoria" })
+})

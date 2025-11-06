@@ -30,4 +30,13 @@ Content-Type: application/json
   "IdSucursal": 1
 }
 ###
-DELETE http://localhost:3000/usuarios/3
+DELETE http://localhost:3000/usuarios/7
+
+###
+POST http://localhost:3000/usuarios/login
+Content-Type: application/json
+
+{
+  "Email": "juan.gonzales@gmail.com",
+  "PasswordHash": "123"
+}
