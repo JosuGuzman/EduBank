@@ -100,7 +100,7 @@ export const cuentaRepository = {
 
 		await db("Cuenta").where({ idCuenta: id }).update(data);
 
-		const cuentaActualizada = await db("Cuenta").where({ idCuenta: id }).first();
+		const cuentaActualizada = this.getId(id);
 		return cuentaActualizada;
 	},
 	async delete(id) {

@@ -54,7 +54,8 @@ export const usuarioController = {
     try {
       const id = req.params.id;
       const usuario = await usuarioRepository.put(id, req.body);
-      res.json(usuario);
+      
+      return res.status(200).json(usuario);
     } catch (error) {
       let errores = {};
       try {
