@@ -1,0 +1,29 @@
+### Auditoria
+
+GET http://localhost:3000/auditorias
+
+###
+
+GET http://localhost:3000/auditorias/1
+
+###
+PUT http://localhost:3000/auditorias/1
+Content-Type: application/json
+
+{
+  "Accion": "Compra"
+}
+
+###
+POST http://localhost:3000/auditorias
+Content-Type: application/json
+
+{
+  "Accion": "Compra",
+  "Fecha": "2025-10-28T10:00:00.000Z",
+  "Detalle": "Compra de producto",
+  "IP": "127.0.0.1",
+  "IdUsuario": 1
+}
+###
+DELETE http://localhost:3000/auditorias/1

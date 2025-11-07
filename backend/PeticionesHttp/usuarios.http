@@ -14,13 +14,13 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/usuarios
+POST http://localhost:3000/usuarios/register
 Content-Type: application/json
 
 {
-  "Nombre": "Juan Gonzales",
-  "DNI": "4012326",
-  "Email": "juan.gonzales@gmail.com",
+  "Nombre": "Miguel Verduguez",
+  "DNI": "47803245",
+  "Email": "miguel.verduguez@gmail.com",
   "Telefono": "011-1234-5678",
   "Direccion": "Av. Siempre Viva 742",
   "Rol": "cliente",
@@ -31,3 +31,12 @@ Content-Type: application/json
 }
 ###
 DELETE http://localhost:3000/usuarios/3
+
+###
+POST http://localhost:3000/usuarios/login
+Content-Type: application/json
+
+{
+  "Email": "juan.gonzales@gmail.com",
+  "PasswordHash": "123"
+}

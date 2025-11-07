@@ -31,7 +31,7 @@ export const cuentaController = {
 		try{
 			const datos = req.body;
 			const cuenta = await cuentaRepository.crear(datos)
-			return res.status(200).json(cuenta)
+			return res.status(201).json(cuenta)
 		}
 		catch(error){
 			console.error("Error en cuentaController.crear:", error);
@@ -46,7 +46,7 @@ export const cuentaController = {
 			console.log("Datos recibidos en PUT:", datos); // 🔍 Debug
 
 			const cuenta = await cuentaRepository.put(id, datos);
-			return res.status(200).json(cuenta);
+			return res.status(200).json({message:"Se actualizó correctamente", cuenta});
 		} catch (error) {
 			console.error("Error en cuentaController.put:", error);
 			res.status(500).json({ message: "Error al actualizar cuenta" });
