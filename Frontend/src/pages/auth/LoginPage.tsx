@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { api } from '../../services/api';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  // const { login } = useAuth();
   const navigate = useNavigate();
+
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/dashboard';
+  // const from = location.state?.from?.pathname || '/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,9 +25,15 @@ export default function LoginPage() {
 
     try {
       setIsLoading(true);
-      await login(email, password);
-      // Redirect to the original requested page or dashboard
-      navigate(from, { replace: true });
+      const response = await api.post('/usuarios/login', {
+        Email: email,
+        PasswordHash: password,
+      });
+              
+      if (response.data?.token) {
+        api.setAuthToken(response.data.token);
+        navigate('/dashboard');
+      }
     } catch (error) {
       setError(
         error instanceof Error 
