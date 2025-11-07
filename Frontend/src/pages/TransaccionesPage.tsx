@@ -3,31 +3,34 @@ import { Plus } from 'lucide-react';
 import { Button } from '../components/UI/Button';
 import { Card } from '../components/UI/Card';
 import { Table } from '../components/UI/Table';
+import { transaccionService, type Transaccion, type TipoTransaccion, type EstadoTransaccion } from '../services/transaccionService';
 
-interface Transaccion {
-    IdTransaccion: number;
-    Fecha: string;
-    Tipo: string;
-    Monto: number;
-    CuentaOrigen: string;
-    CuentaDestino: string;
-    Estado: string;
+interface TransaccionConDetalles extends Omit<Transaccion, 'IdCuentaOrigen' | 'IdCuentaDestino'> {
+    // Usamos los campos de UsuarioOrigen y UsuarioDestino que ya vienen en la transacción
 }
 
 const TransaccionesPage = () => {
-    const [transacciones, setTransacciones] = useState<Transaccion[]>([]);
+    const [transacciones, setTransacciones] = useState<TransaccionConDetalles[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        setTimeout(() => {
-            setTransacciones([
-                { IdTransaccion: 1, Fecha: '2025-01-20 10:30', Tipo: 'transferencia', Monto: 5000, CuentaOrigen: 'juan.ahorro', CuentaDestino: 'maria.corriente', Estado: 'completado' },
-                { IdTransaccion: 2, Fecha: '2025-01-20 14:15', Tipo: 'deposito', Monto: 15000, CuentaOrigen: '-', CuentaDestino: 'juan.ahorro', Estado: 'completado' },
-                { IdTransaccion: 3, Fecha: '2025-01-21 09:00', Tipo: 'retiro', Monto: 8000, CuentaOrigen: 'carlos.ahorro', CuentaDestino: '-', Estado: 'completado' },
-                { IdTransaccion: 4, Fecha: '2025-01-21 11:45', Tipo: 'pago', Monto: 3500, CuentaOrigen: 'maria.corriente', CuentaDestino: '-', Estado: 'pendiente' },
-            ]);
-            setLoading(false);
-        }, 500);
+        const fetchTransacciones = async () => {
+            try {
+                const transaccionesData = await transaccionService.getTransacciones();
+
+
+                setTransacciones(transaccionesData);
+                setError(null);
+            } catch (err) {
+                console.error('Error al cargar las transacciones:', err);
+                setError('No se pudieron cargar las transacciones. Por favor, intente nuevamente.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTransacciones();
     }, []);
 
     const columns = [
@@ -35,18 +38,46 @@ const TransaccionesPage = () => {
         {
             key: 'Tipo',
             label: 'Tipo',
-            render: (val: string) => (
-                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${val === 'transferencia' ? 'bg-blue-100 text-blue-800' :
-                    val === 'deposito' ? 'bg-green-100 text-green-800' :
-                        val === 'retiro' ? 'bg-red-100 text-red-800' :
-                            'bg-purple-100 text-purple-800'
-                    }`}>
-                    {val.charAt(0).toUpperCase() + val.slice(1)}
+            render: (val: TipoTransaccion) => {
+                const tipoConfig = {
+                    'transferencia': { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Transferencia' },
+                    'deposito': { bg: 'bg-green-100', text: 'text-green-800', label: 'Depósito' },
+                    'retiro': { bg: 'bg-red-100', text: 'text-red-800', label: 'Retiro' },
+                    'pago_servicio': { bg: 'bg-purple-100', text: 'text-purple-800', label: 'Pago de Servicio' },
+                    'pago_prestamo': { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Pago de Préstamo' }
+                };
+                // ignorar el error de typescript codigo TS2538
+                // @ts-ignore
+                const config = tipoConfig[val] || { bg: 'bg-gray-100', text: 'text-gray-800', label: val };
+                
+                return (
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${config.bg} ${config.text}`}>
+                        {config.label}
+                    </span>
+                );
+            }
+        },
+        { 
+            key: 'CuentaOrigen', 
+            label: 'Origen',
+            render: (_: any, row: TransaccionConDetalles) => (
+                <span className="font-medium">
+                    {row.cuentaOrigen?.Alias|| 'Sistema'}
                 </span>
             )
         },
-        { key: 'CuentaOrigen', label: 'Origen' },
-        { key: 'CuentaDestino', label: 'Destino' },
+        { 
+            key: 'CuentaDestino', 
+            label: 'Destino',
+            render: (_: any, row: TransaccionConDetalles) => {
+                console.log(row.cuentaDestino);
+                return (
+                    <span className="font-medium">
+                        {row.cuentaDestino?.Alias || 'Sistema'}
+                    </span>
+                );
+            }
+        },
         {
             key: 'Monto',
             label: 'Monto',
@@ -71,6 +102,11 @@ const TransaccionesPage = () => {
     ];
 
     if (loading) return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>;
+    
+    if (error) return <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <strong className="font-bold">Error: </strong>
+        <span className="block sm:inline">{error}</span>
+    </div>;
 
     return (
         <div>

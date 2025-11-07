@@ -1,34 +1,31 @@
-// ==========================================================
-// src/pages/SucursalesPage.jsx
 import { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '../components/UI/Button';
 import { Card } from '../components/UI/Card';
 import { Table } from '../components/UI/Table';
+import { sucursalService, type Sucursal } from '../services/sucursalService';
 
-interface Sucursal {
-    IdSucursal: number;
-    Nombre: string;
-    Ciudad: string;
-    Direccion: string;
-    Telefono: string;
-    Email: string;
-    Estado: boolean;
-}
 
 const SucursalesPage = () => {
     const [sucursales, setSucursales] = useState<Sucursal[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        setTimeout(() => {
-            setSucursales([
-                { IdSucursal: 1, Nombre: 'Sucursal Central', Ciudad: 'Buenos Aires', Direccion: 'Av. Siempre Viva 742', Telefono: '011-1234-5678', Email: 'central@banco.com', Estado: true },
-                { IdSucursal: 2, Nombre: 'Sucursal Norte', Ciudad: 'Córdoba', Direccion: 'Calle Falsa 123', Telefono: '0351-999-8888', Email: 'norte@banco.com', Estado: true },
-                { IdSucursal: 3, Nombre: 'Sucursal Sur', Ciudad: 'Rosario', Direccion: 'San Martín 456', Telefono: '0341-777-6666', Email: 'sur@banco.com', Estado: true },
-            ]);
-            setLoading(false);
-        }, 500);
+        const fetchSucursales = async () => {
+            try {
+                const data = await sucursalService.getSucursales();
+                setSucursales(data);
+                setError(null);
+            } catch (err) {
+                console.error('Error al cargar las sucursales:', err);
+                setError('No se pudieron cargar las sucursales. Por favor, intente nuevamente.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchSucursales();
     }, []);
 
     const columns = [

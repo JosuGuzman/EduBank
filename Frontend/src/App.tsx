@@ -11,7 +11,6 @@ import SucursalesPage from './pages/SucursalesPage'
 import Login from './pages/Login'
 import Navbar from './components/Navbar'
 import type { JSX } from 'react'
-import { Club } from 'lucide-react'
 
 // Componente para proteger rutas privadas
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
@@ -31,7 +30,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     return <Navigate to="/login" replace />
   }
 
-  
+
 
   return children
 }

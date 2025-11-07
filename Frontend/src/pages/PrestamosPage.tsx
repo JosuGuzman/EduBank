@@ -1,36 +1,58 @@
 
-// ==========================================================
-// src/pages/PrestamosPage.jsx
 import { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '../components/UI/Button';
 import { Card } from '../components/UI/Card';
 import { Table } from '../components/UI/Table';
+import { prestamoService, type Prestamo, type EstadoPrestamo } from '../services/prestamoService';
+import { usuarioService, type Usuario } from '../services/usuarioService';
 
-interface Prestamo {
-    IdPrestamo: number;
+interface PrestamoConUsuario extends Omit<Prestamo, 'IdUsuario' | 'FechaSolicitud' | 'FechaAprobacion' | 'FechaInicio' | 'FechaFin'> {
     Usuario: string;
-    Monto: number;
-    TasaInteres: number;
-    PlazoMeses: number;
-    CuotaMensual: number;
     FechaInicio: string;
-    Estado: string;
 }
 
 const PrestamosPage = () => {
-    const [prestamos, setPrestamos] = useState<Prestamo[]>([]);
+    const [prestamos, setPrestamos] = useState<PrestamoConUsuario[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [usuarios, setUsuarios] = useState<Record<number, Usuario>>({});
 
     useEffect(() => {
-        setTimeout(() => {
-            setPrestamos([
-                { IdPrestamo: 1, Usuario: 'Juan Pérez', Monto: 200000, TasaInteres: 10.5, PlazoMeses: 24, CuotaMensual: 9458, FechaInicio: '2025-01-01', Estado: 'aprobado' },
-                { IdPrestamo: 2, Usuario: 'María López', Monto: 150000, TasaInteres: 12, PlazoMeses: 36, CuotaMensual: 4983, FechaInicio: '2025-01-15', Estado: 'pendiente' },
-                { IdPrestamo: 3, Usuario: 'Carlos García', Monto: 300000, TasaInteres: 9.5, PlazoMeses: 48, CuotaMensual: 7632, FechaInicio: '2024-12-10', Estado: 'aprobado' },
-            ]);
-            setLoading(false);
-        }, 500);
+        const fetchData = async () => {
+            try {
+                // Obtener préstamos y usuarios en paralelo
+                const [prestamosData, usuariosData] = await Promise.all([
+                    prestamoService.getPrestamos(),
+                    usuarioService.getUsuarios()
+                ]);
+
+                // Crear un mapa de usuarios por ID
+                const usuariosMap = usuariosData.reduce((acc, usuario) => {
+                    acc[usuario.IdUsuario] = usuario;
+                    return acc;
+                }, {} as Record<number, Usuario>);
+
+                setUsuarios(usuariosMap);
+
+                // Mapear préstamos para incluir el nombre del usuario
+                const prestamosConUsuario = prestamosData.map(prestamo => ({
+                    ...prestamo,
+                    Usuario: usuariosMap[prestamo.IdUsuario]?.Nombre || 'Usuario desconocido',
+                    FechaInicio: prestamo.FechaInicio || prestamo.FechaSolicitud
+                }));
+
+                setPrestamos(prestamosConUsuario);
+                setError(null);
+            } catch (err) {
+                console.error('Error al cargar los préstamos:', err);
+                setError('No se pudieron cargar los préstamos. Por favor, intente nuevamente.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, []);
 
     const columns = [
@@ -72,15 +94,38 @@ const PrestamosPage = () => {
     ];
 
     if (loading) return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>;
+    
+    if (error) return <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <strong className="font-bold">Error: </strong>
+        <span className="block sm:inline">{error}</span>
+    </div>;
 
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl font-bold text-gray-900">Gestión de Préstamos</h1>
-                <Button><Plus className="w-4 h-4 mr-2" />Nuevo Préstamo</Button>
+                <Button onClick={() => {}}><Plus className="w-4 h-4 mr-2" />Nuevo Préstamo</Button>
             </div>
             <Card>
-                <Table columns={columns} data={prestamos} onEdit={() => { }} onDelete={() => { }} />
+                <Table 
+                    columns={columns} 
+                    data={prestamos} 
+                    onEdit={(prestamo) => {
+                        // Implementar lógica de edición
+                        console.log('Editar préstamo:', prestamo);
+                    }} 
+                    onDelete={async (prestamo) => {
+                        if (window.confirm(`¿Está seguro de que desea eliminar el préstamo #${prestamo.IdPrestamo}?`)) {
+                            try {
+                                await prestamoService.deletePrestamo(prestamo.IdPrestamo);
+                                setPrestamos(prestamos.filter(p => p.IdPrestamo !== prestamo.IdPrestamo));
+                            } catch (err) {
+                                console.error('Error al eliminar el préstamo:', err);
+                                alert('No se pudo eliminar el préstamo. Por favor, intente nuevamente.');
+                            }
+                        }
+                    }} 
+                />
             </Card>
         </div>
     );
