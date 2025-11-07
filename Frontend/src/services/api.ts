@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://edubank-1.onrender.com/'; // Update with your backend URL
+const API_BASE_URL = 'https://edubank-1.onrender.com'; 
 
 export interface ApiResponse<T = any> {
   data?: T;

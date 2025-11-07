@@ -1,5 +1,3 @@
-// ==========================================================
-// src/pages/TarjetasPage.jsx
 import { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '../components/UI/Button';
