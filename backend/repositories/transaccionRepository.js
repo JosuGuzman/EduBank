@@ -43,7 +43,6 @@ export const transaccionRepository = {
         throw new Error("No se encontró la transacción");
       }
 
-      // 🧩 Solo buscar si existen las cuentas
       const cuentaOrigen = transaccion.IdCuentaOrigen
         ? await cuentaRepository.getId(transaccion.IdCuentaOrigen)
         : null;
