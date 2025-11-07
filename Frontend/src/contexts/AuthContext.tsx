@@ -1,14 +1,8 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-type User = {
-  id: string;
-  email: string;
-  nombre: string;
-  apellido: string;
-  // Add other user fields as needed
-};
+import { authService } from '../services/authService';
+import type { User } from '../services/authService';
 
 type AuthContextType = {
   user: User | null;
@@ -20,8 +14,10 @@ type AuthContextType = {
     apellido: string;
     email: string;
     password: string;
+    confirmPassword: string;
   }) => Promise<void>;
   logout: () => void;
+  loadUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -31,55 +27,52 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Check if user is already logged in (from localStorage)
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // TODO: Replace with actual token verification
-        const token = localStorage.getItem('token');
-        if (token) {
-          // Simulate token verification
-          await new Promise(resolve => setTimeout(resolve, 500));
-          // For demo purposes, we'll just set a mock user
-          setUser({
-            id: '1',
-            email: 'demo@edubank.com',
-            nombre: 'Demo',
-            apellido: 'User'
-          });
-        }
-      } catch (error) {
-        console.error('Auth check failed:', error);
-        localStorage.removeItem('token');
-      } finally {
-        setIsLoading(false);
+  // Load user data when the app starts
+  const loadUser = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await authService.getCurrentUser();
+      
+      if (response.data) {
+        setUser(response.data);
+      } else {
+        authService.logout();
+        setUser(null);
       }
-    };
-
-    checkAuth();
+    } catch (error) {
+      console.error('Failed to load user:', error);
+      authService.logout();
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  // Check if user is already logged in on initial load
+  useEffect(() => {
+    if (authService.isAuthenticated()) {
+      loadUser();
+    } else {
+      setIsLoading(false);
+    }
+  }, [loadUser]);
 
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      // TODO: Replace with actual API call
-      console.log('Login attempt with:', { email, password });
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await authService.login({ email, password });
       
-      // Mock successful login
-      const mockUser = {
-        id: '1',
-        email,
-        nombre: 'Demo',
-        apellido: 'User'
-      };
+      if (response.error) {
+        throw new Error(response.error);
+      }
       
-      setUser(mockUser);
-      localStorage.setItem('token', 'dummy-token');
-      navigate('/dashboard');
+      if (response.data?.user) {
+        setUser(response.data.user);
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error('Login failed:', error);
-      throw new Error('Error al iniciar sesión. Verifica tus credenciales.');
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -90,35 +83,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     apellido: string;
     email: string;
     password: string;
+    confirmPassword: string;
   }) => {
     try {
       setIsLoading(true);
-      // TODO: Replace with actual API call
-      console.log('Registration attempt with:', userData);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await authService.register(userData);
       
-      // Mock successful registration
-      const mockUser = {
-        id: '1',
-        email: userData.email,
-        nombre: userData.nombre,
-        apellido: userData.apellido
-      };
+      if (response.error) {
+        throw new Error(response.error);
+      }
       
-      setUser(mockUser);
-      localStorage.setItem('token', 'dummy-token');
-      navigate('/dashboard');
+      if (response.data?.user) {
+        setUser(response.data.user);
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error('Registration failed:', error);
-      throw new Error('Error al crear la cuenta. Por favor, intenta nuevamente.');
+      throw error;
     } finally {
       setIsLoading(false);
     }
   };
 
   const logout = () => {
+    authService.logout();
     setUser(null);
-    localStorage.removeItem('token');
     navigate('/login');
   };
 
@@ -131,6 +120,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         register,
         logout,
+        loadUser,
       }}
     >
       {children}
