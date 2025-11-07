@@ -25,7 +25,8 @@ app.use(helmet());
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
 app.use(rateLimit({ windowMs: 60 * 1000, max: 100 }));
 app.use(auditoriaGlobal);
