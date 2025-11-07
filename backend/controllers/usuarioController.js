@@ -43,11 +43,8 @@ export const usuarioController = {
           maxAge: 1000 * 60 * 60,
         })
         .status(200)
-        .header("Authorization", `Bearer ${token}`)
         .json({
-          message: "Register exitoso",
-          usuario: nuevoUsuario,
-          token: token,
+          message: "Register exitoso"
         });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -98,11 +95,8 @@ export const usuarioController = {
           maxAge: 1000 * 60 * 60,
         })
         .status(200)
-        .header("Authorization", `Bearer ${token}`)
         .json({
           message: "Login exitoso",
-          usuario: nuevoUsuario,
-          token: token,
         });
     } catch (error) {
       res.status(500).json({ error: error.message });

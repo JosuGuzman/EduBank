@@ -10,6 +10,7 @@ import usuarioRoutes from "./routes/usuarioRoutes.js";
 import transaccionRoutes from "./routes/transaccionRoutes.js";
 import tarjetaRoutes from "./routes/tarjetaRoutes.js";
 import prestamoRoutes from "./routes/prestamoRoutes.js";
+import auditoriaRoutes from "./routes/auditoriaRoutes.js";
 
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use("/usuarios", usuarioRoutes);
 app.use("/transacciones", transaccionRoutes);
 app.use("/tarjetas", tarjetaRoutes);
 app.use("/prestamos", prestamoRoutes);
+app.use("/auditorias", auditoriaRoutes);
 
 app.get("/", (req, res) => {
     res.send("Servidor bancario activo ✅");
