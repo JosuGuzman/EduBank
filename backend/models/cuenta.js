@@ -4,7 +4,7 @@ import { tipoCuentaSchema } from "./tipoCuenta.js";
 import { crearSucursalSchema, sucursalSchema } from "./sucursal.js";
 
 export const cuentaSchema = z.object({
-	idCuenta: z
+	IdCuenta: z
 		.number({
 			invalid_type_error: "El ID de la cuenta debe ser un número",
 		})
