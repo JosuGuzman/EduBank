@@ -51,7 +51,6 @@ export const usuarioRepository = {
 
     const nuevoUsuarioParaBd = {
       ...nuevoUsuario,
-      FechaAlta: fechaMySQL,
       PasswordHash: hashedPassword,
     };
 
