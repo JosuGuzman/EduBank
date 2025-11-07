@@ -31,6 +31,8 @@ export const api = {
       const response = await fetch(url, config);
       const responseData = await response.json().catch(() => ({}));
 
+      console.log(response)
+
       if (!response.ok) {
         return {
           error: responseData.message || 'Error en la solicitud',
