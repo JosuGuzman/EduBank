@@ -1,97 +1,79 @@
-import { api } from "./api";
-import type { ApiResponse } from "./api";
+import axios from "axios";
 
-export interface User {
-  id: string;
-  email: string;
-  nombre: string;
-  apellido: string;
-  // Add other user fields as needed
-}
+const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface RegisterData extends LoginCredentials {
-  nombre: string;
-  dni: string;
-  telefono: string;
-  direccion: string;
-  password: string;
-  idSucursal: number;
-  confirmPassword: string;
-}
+const api = axios.create({
+  baseURL: API_URL,
+  withCredentials: true, // Importante para enviar y recibir cookies
+});
 
 export const authService = {
-  async login(
-    credentials: LoginCredentials
-  ): Promise<ApiResponse<{ user: User; token: string }>> {
-    const response = await api.post<{ user: User; token: string }>(
-      "/usuarios/login",
-      {
-        Email: credentials.email,
-        PasswordHash: credentials.password,
-      }
-    );
+  // Verificar si hay un token en las cookies
+  isAuthenticated: (): boolean => {
+    return document.cookie
+      .split(";")
+      .some((c) => c.trim().startsWith("access_token="));
+  },
 
-    if (response.data?.token) {
-      api.setAuthToken(response.data.token);
+  // Iniciar sesión
+  login: async (email: string, password: string) => {
+    try {
+      console.log("sadasdasdasdasd");
+      const response = await api.post("usuarios/login", {
+        Email: email,
+        PasswordHash: password,
+      });
+      console.log(response);
+      return { data: response.data, error: null };
+    } catch (error: any) {
+      return {
+        data: null,
+        error: error.response?.data?.message || "Error al iniciar sesión",
+      };
     }
-
-    return response;
   },
 
-async register(
-  userData: RegisterData
-): Promise<ApiResponse<{ user: User; token: string }>> {
-  if (userData.password !== userData.confirmPassword) {
-    return {
-      error: "Las contraseñas no coinciden",
-      status: 400,
-    };
-  }
-
-  const payload = {
-    Nombre: userData.nombre,
-    Email: userData.email,
-    PasswordHash: userData.password,
-    DNI: userData.dni,
-    Telefono: userData.telefono,
-    Direccion: userData.direccion,
-    IdSucursal: userData.idSucursal,
-  };
-
-  try {
-    const response = await api.post<{ user: User; token: string }>("/usuarios/register", payload);
-
-    if (response.data?.token) {
-      api.setAuthToken(response.data.token);
+  // Cerrar sesión
+  logout: async () => {
+    try {
+      // Limpiar la cookie del token
+      document.cookie = 'access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      // Redirigir al login
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      // Asegurarse de redirigir incluso si hay un error
+      window.location.href = "/login";
     }
+  },
 
-    return response;
-  } catch (err: any) {
-    return {
-      error: err.response?.data?.message || "Error al registrar usuario",
-      status: err.response?.status || 500,
+  // Verificar autenticación
+  checkAuth: async () => {
+    // Solo verificamos si hay un token en las cookies
+    const hasToken = document.cookie
+      .split(";")
+      .some((c) => c.trim().startsWith("access_token"));
+
+    console.log("hasToken", hasToken)
+      
+    return { 
+      isAuthenticated: hasToken,
+      error: hasToken ? null : "No hay token de autenticación"
     };
-  }
-},
-
-
-  logout(): void {
-    api.removeAuthToken();
-    // Optional: Make API call to invalidate token on the server
-    // await api.post('/auth/logout');
   },
 
-  isAuthenticated(): boolean {
-    return api.isAuthenticated();
-  },
-
-  getAuthHeader(): { Authorization: string } | {} {
-    const token = api.getAuthToken();
-    return token ? { Authorization: `Bearer ${token}` } : {};
+  // Obtener información del usuario autenticado
+  getCurrentUser: async () => {
+    try {
+      const response = await api.get("/usuarios/me");
+      return { user: response.data, error: null };
+    } catch (error: any) {
+      return {
+        user: null,
+        error: error.response?.data?.message || "Error al obtener el usuario",
+      };
+    }
   },
 };
+
+export default authService;

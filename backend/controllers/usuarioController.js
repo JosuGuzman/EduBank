@@ -77,6 +77,21 @@ export const usuarioController = {
       res.status(500).json({ error: error.message });
     }
   },
+  
+  getCurrentUser: async (req, res) => {
+    try {
+      // El middleware de autenticación ya verificó el token y adjuntó el usuario a req.user
+      if (!req.user) {
+        return res.status(401).json({ error: 'No autorizado' });
+      }
+      
+      // Obtener la información completa del usuario
+      const usuario = await usuarioRepository.getId(req.user.id_usuario);
+      res.status(200).json(usuario);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
   async login(req, res) {
     try {
       const nuevoUsuario = await usuarioRepository.login(req.body);
