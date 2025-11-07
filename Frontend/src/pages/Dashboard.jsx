@@ -1,7 +1,6 @@
-import React from 'react';
-import { useApi } from '../hooks/useApi';
-import { usuarioService, cuentaService, transaccionService, prestamoService } from '../services/api';
-import { Users, Banknote, ArrowLeftRight, CreditCard, TrendingUp } from 'lucide-react';
+// import { useApi } from '../hooks/useApi';
+// import { usuarioService, cuentaService, transaccionService, prestamoService } from '../services/api';
+// import { Users, Banknote, ArrowLeftRight, CreditCard, TrendingUp } from 'lucide-react';
 
 const StatCard = ({ title, value, icon: Icon, color }) => (
   <div className="bg-white rounded-lg shadow-md p-6">
@@ -18,19 +17,21 @@ const StatCard = ({ title, value, icon: Icon, color }) => (
 );
 
 const Dashboard = () => {
-  const { data: usuarios, loading: loadingUsuarios } = useApi(usuarioService.listar);
-  const { data: cuentas, loading: loadingCuentas } = useApi(cuentaService.listar);
-  const { data: transacciones, loading: loadingTransacciones } = useApi(transaccionService.listar);
-  const { data: prestamos, loading: loadingPrestamos } = useApi(prestamoService.listar);
+  // const { data: usuarios, loading: loadingUsuarios } = useApi(usuarioService.listar);
+  // const { data: cuentas, loading: loadingCuentas } = useApi(cuentaService.listar);
+  // const { data: transacciones, loading: loadingTransacciones } = useApi(transaccionService.listar);
+  // const { data: prestamos, loading: loadingPrestamos } = useApi(prestamoService.listar);
 
-  if (loadingUsuarios || loadingCuentas || loadingTransacciones || loadingPrestamos) {
-    return <div className="flex justify-center items-center h-64">Cargando...</div>;
-  }
+  
 
-  const totalUsuarios = usuarios?.length || 0;
-  const totalCuentas = cuentas?.length || 0;
-  const totalTransacciones = transacciones?.length || 0;
-  const totalPrestamos = prestamos?.length || 0;
+  // if (loadingUsuarios || loadingCuentas || loadingTransacciones || loadingPrestamos) {
+  //   return <div className="flex justify-center items-center h-64">Cargando...</div>;
+  // }
+
+  // const totalUsuarios = usuarios?.length || 0;
+  // const totalCuentas = cuentas?.length || 0;
+  // const totalTransacciones = transacciones?.length || 0;
+  // const totalPrestamos = prestamos?.length || 0;
 
   return (
     <div>
