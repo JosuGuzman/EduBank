@@ -47,11 +47,6 @@ export const usuarioRepository = {
   async crear(datos) {
     const nuevoUsuario = usuarioInputSchema.parse(datos);
 
-    const fechaMySQL = new Date(nuevoUsuario.FechaAlta)
-      .toISOString()
-      .slice(0, 19)
-      .replace("T", " ");
-
     const hashedPassword = await bcrypt.hash(nuevoUsuario.PasswordHash, 10);
 
     const nuevoUsuarioParaBd = {

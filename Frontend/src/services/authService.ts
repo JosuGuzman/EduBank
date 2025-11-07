@@ -16,7 +16,11 @@ export interface LoginCredentials {
 
 export interface RegisterData extends LoginCredentials {
   nombre: string;
-  apellido: string;
+  dni: string;
+  telefono: string;
+  direccion: string;
+  password: string;
+  idSucursal: number;
   confirmPassword: string;
 }
 
@@ -39,43 +43,42 @@ export const authService = {
     return response;
   },
 
-  async register(
-    userData: RegisterData
-  ): Promise<ApiResponse<{ user: User; token: string }>> {
-    const { confirmPassword, ...registrationData } = userData;
+async register(
+  userData: RegisterData
+): Promise<ApiResponse<{ user: User; token: string }>> {
+  if (userData.password !== userData.confirmPassword) {
+    return {
+      error: "Las contraseñas no coinciden",
+      status: 400,
+    };
+  }
 
-    if (userData.password !== confirmPassword) {
-      return {
-        error: "Las contraseñas no coinciden",
-        status: 400,
-      };
-    }
+  const payload = {
+    Nombre: userData.nombre,
+    Email: userData.email,
+    PasswordHash: userData.password,
+    DNI: userData.dni,
+    Telefono: userData.telefono,
+    Direccion: userData.direccion,
+    IdSucursal: userData.idSucursal,
+  };
 
-    const response = await api.post<{ user: User; token: string }>(
-      "/auth/register",
-      registrationData
-    );
+  try {
+    const response = await api.post<{ user: User; token: string }>("/usuarios/register", payload);
 
     if (response.data?.token) {
       api.setAuthToken(response.data.token);
     }
 
     return response;
-  },
+  } catch (err: any) {
+    return {
+      error: err.response?.data?.message || "Error al registrar usuario",
+      status: err.response?.status || 500,
+    };
+  }
+},
 
-  async getCurrentUser(): Promise<ApiResponse<User>> {
-    const token = api.getAuthToken();
-    if (!token) {
-      return {
-        error: "No hay sesión activa",
-        status: 401,
-      };
-    }
-
-    return api.get<User>("/auth/me", {
-      Authorization: `Bearer ${token}`,
-    });
-  },
 
   logout(): void {
     api.removeAuthToken();

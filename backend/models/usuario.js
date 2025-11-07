@@ -52,8 +52,8 @@ export const usuarioInputSchema = z.object({
 	Telefono: z.string().optional(),
 	Direccion: z.string().optional(),
 	Rol: z.enum(["cliente", "empleado", "gerente", "admin"]).default("cliente"),
-	FechaAlta: z.union([z.string().datetime(), z.date()]),
-	Activo: z.union([z.boolean(), z.number().transform(Boolean)]),
+	FechaAlta: z.union([z.string().datetime(), z.date()]).optional(),
+	Activo: z.union([z.boolean(), z.number().transform(Boolean)]).optional(),
 	IdSucursal: z.number({ invalid_type_error: "idSucursal debe ser un número" }),
 	PasswordHash: z.string({ required_error: "La contraseña es obligatoria" })
 });

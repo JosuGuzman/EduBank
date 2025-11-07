@@ -1,6 +1,5 @@
 import { registrarAuditoria } from "./auditoriaMiddleware.js";
 
-// Traduce método HTTP a verbo en español
 const verboAccion = {
   POST: "Alta",
   PUT: "Modificación",
