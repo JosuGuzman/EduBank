@@ -156,7 +156,7 @@ async put(id, datos) {
             throw new Error("La transacción no existe");
         }
 
-        // 🔄 REVERTIR SALDOS SI LA TRANSACCIÓN ESTABA COMPLETADA
+        // REVERTIR SALDOS SI LA TRANSACCIÓN ESTABA COMPLETADA
         if (transaccion.Estado === "completado") {
             await this.revertirSaldos(transaccion);
         }
