@@ -32,7 +32,6 @@ export const transaccionController = {
         } catch (error) {
             console.error("Error en transaccionController.crear:", error);
             
-            // Manejo específico de errores de validación
             if (error.message.includes("JSON")) {
                 let errores = {};
                 try {
@@ -48,22 +47,34 @@ export const transaccionController = {
     },
 
     async put(req, res) {
+    try {
+        const { id } = req.params;
+        const transaccionActualizada = await transaccionRepository.put(id, req.body);
+        res.json(transaccionActualizada);
+    } catch (error) {
+        console.error("Error en transaccionController.put:", error);
+
+        let errores = {};
+
         try {
-            const { id } = req.params;
-            const transaccionActualizada = await transaccionRepository.put(id, req.body);
-            res.json(transaccionActualizada);
-        } catch (error) {
-            console.error("Error en transaccionController.put:", error);
-            
-            let errores = {};
-            try {
-                errores = JSON.parse(error.message);
-            } catch {
-                errores.general = error.message;
-            }
-            res.status(400).json({ errores });
+        errores = JSON.parse(error.message);
+        return res.status(400).json({ errores });
+        } catch {
+        const mensaje = error.message || "Error desconocido";
+
+        if (mensaje.includes("No se puede modificar el tipo") || mensaje.includes("cuentas de una transacción")) {
+            return res.status(400).json({ error: mensaje });
         }
+
+        if (mensaje.includes("no existe")) {
+            return res.status(404).json({ error: mensaje });
+        }
+
+        return res.status(500).json({ error: "Error interno del servidor" });
+        }
+    }
     },
+
 
     async delete(req, res) {
         try {

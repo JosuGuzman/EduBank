@@ -9,7 +9,7 @@ export const verificarToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    req.user = decoded; 
+    req.user = decoded.payload; 
     next();
   } catch (err) {
     console.error("Error verificando token:", err);

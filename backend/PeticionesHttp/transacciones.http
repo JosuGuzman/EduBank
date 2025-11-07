@@ -10,20 +10,18 @@ Content-Type: application/json
 
 {
   "IdCuentaOrigen": 1,
-  "IdCuentaDestino": 2,
-  "Monto": 1500.50,
-  "Tipo": "transferencia",
+  "Monto": 1500,
+  "Tipo": "retiro",
   "Descripcion": "Pago de servicios",
   "Estado": "completado",
   "Fecha": "2025-10-28T12:00:00.000Z"
 }
 
 ###
-PUT http://localhost:3000/transacciones/1
+PUT http://localhost:3000/transacciones/8
 Content-Type: application/json
 
 {
-  "Descripcion": "Pago de servicios actualizado",
   "Estado": "completado"
 }
 

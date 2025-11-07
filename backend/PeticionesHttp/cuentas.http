@@ -3,7 +3,7 @@
 GET http://localhost:3000/cuentas
 
 ###
-GET http://localhost:3000/cuentas/1
+GET http://localhost:3000/cuentas/3
 
 ###
 POST http://localhost:3000/cuentas
