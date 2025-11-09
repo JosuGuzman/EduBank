@@ -46,6 +46,21 @@ export const usuarioRepository = {
   },
   async crear(datos) {
     const nuevoUsuario = usuarioInputSchema.parse(datos);
+    
+    const existente = await db("Usuario")
+      .where("DNI", nuevoUsuario.DNI)
+      .orWhere("Email", nuevoUsuario.Email)
+      .first();
+
+    if (existente) {
+      if (existente.DNI === nuevoUsuario.DNI) {
+        throw new Error("El DNI ya se encuentra registrado.");
+      }
+      if (existente.Email === nuevoUsuario.Email) {
+        throw new Error("El email ya se encuentra registrado.");
+      }
+    }
+
 
     const hashedPassword = await bcrypt.hash(nuevoUsuario.PasswordHash, 10);
 

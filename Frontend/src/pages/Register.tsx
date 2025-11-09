@@ -39,13 +39,25 @@ const Register = () => {
 
             const response = await authService.register(registerData);
 
-            if (response.error) {
-                setError(response.error);
-            } else {
-                // Redirigir al login después de un registro exitoso
-                navigate('/dashboard', { state: { success: '¡Registro exitoso! Por favor inicia sesión.' } });
-            }
-        } catch (error: any) {
+      if (response.error) {
+        // 🔥 Manejo personalizado de errores comunes
+        let customMessage = response.error;
+
+        if (response.error.toLowerCase().includes("dni")) {
+          customMessage = "El DNI ya se encuentra registrado en el sistema.";
+        } else if (response.error.toLowerCase().includes("email")) {
+          customMessage = "El correo electrónico ya está en uso.";
+        } else if (response.error.toLowerCase().includes("telefono")) {
+          customMessage = "El número de teléfono ya está registrado.";
+        }
+
+        setError(customMessage);
+      } else {
+        navigate('/dashboard', {
+          state: { success: '¡Registro exitoso! Por favor inicia sesión.' },
+        });
+      }
+    }  catch (error: any) {
             setError(error.message || 'Error al registrar el usuario');
         } finally {
             setIsLoading(false);
@@ -66,8 +78,11 @@ const Register = () => {
                     </div>
 
                     {error && (
-                        <div className="mt-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-md" role="alert">
-                            <p className="text-sm text-red-700">{error}</p>
+                        <div
+                        className="mt-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-md"
+                        role="alert"
+                        >
+                        <p className="text-sm text-red-700">{error}</p>
                         </div>
                     )}
 
