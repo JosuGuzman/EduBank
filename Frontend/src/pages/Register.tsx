@@ -2,19 +2,16 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService, type RegisterData } from '../services/authService';
 
-interface RegisterFormData extends RegisterData {
-  ConfirmPassword: string;
-}
+
 const Register = () => {
-    const [formData, setFormData] = useState<RegisterFormData>({
+    const [formData, setFormData] = useState<RegisterData>({
         Email: '',
         Nombre: '',
         DNI: '',
         Direccion: '',
         Telefono: '',
         IdSucursal: 1, // Valor por defecto, podrías obtenerlo de un selector
-        PasswordHash: '',
-        ConfirmPassword: ''
+        PasswordHash: ''
     });
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -32,17 +29,13 @@ const Register = () => {
         e.preventDefault();
         setError('');
 
-        // Validaciones
-        if (formData.PasswordHash !== formData.ConfirmPassword) {
-            setError('Las contraseñas no coinciden');
-            return;
-        }
+
 
 
         try {
             setIsLoading(true);
             // Extraemos ConfirmPassword ya que no lo necesitamos en el backend
-            const { ConfirmPassword, ...registerData } = formData;
+            const { ...registerData } = formData;
 
             const response = await authService.register(registerData);
 
@@ -50,7 +43,7 @@ const Register = () => {
                 setError(response.error);
             } else {
                 // Redirigir al login después de un registro exitoso
-                navigate('/login', { state: { success: '¡Registro exitoso! Por favor inicia sesión.' } });
+                navigate('/dashboard', { state: { success: '¡Registro exitoso! Por favor inicia sesión.' } });
             }
         } catch (error: any) {
             setError(error.message || 'Error al registrar el usuario');
@@ -196,23 +189,6 @@ const Register = () => {
                                     className="appearance-none block w-full px-3 py-2.5 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-200"
                                     placeholder="••••••••"
                                     value={formData.PasswordHash}
-                                    onChange={handleChange}
-                                    disabled={isLoading}
-                                />
-                            </div>
-
-                            <div>
-                                <label htmlFor="ConfirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                                    Confirmar contraseña *
-                                </label>
-                                <input
-                                    id="ConfirmPassword"
-                                    name="ConfirmPassword"
-                                    type="password"
-                                    required
-                                    className="appearance-none block w-full px-3 py-2.5 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-200"
-                                    placeholder="••••••••"
-                                    value={formData.ConfirmPassword}
                                     onChange={handleChange}
                                     disabled={isLoading}
                                 />

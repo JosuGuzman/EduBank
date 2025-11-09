@@ -45,10 +45,10 @@ export const authService = {
     }
   },
   register: async ( data:RegisterData) => {
-    console.log("data",data)
+    console.log("data",)
     try {
       console.log("si te registraste guacho");
-      const response = await api.post("usuarios/register")
+      const response = await api.post("usuarios/register",data)
       
       console.log("respoenmse",response);
       return { data: response.data, error: null };
