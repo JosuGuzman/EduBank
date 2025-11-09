@@ -1,7 +1,7 @@
 import axios from "axios";
-
-
-const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
+import Cookies from "js-cookie";
+// const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
+const API_URL = "http://localhost:3000"; // Ajusta la URL según tu backend
 
 const api = axios.create({
   baseURL: API_URL,
@@ -76,16 +76,9 @@ export const authService = {
   // Verificar autenticación
   checkAuth: async () => {
     // Solo verificamos si hay un token en las cookies
-    const hasToken = document.cookie
-      .split(";")
-      .some((c) => c.trim().startsWith("access_token"));
-
+    const hasToken = Cookies.get("access_token");
     console.log("hasToken", hasToken);
-
-    return {
-      isAuthenticated: hasToken,
-      error: hasToken ? null : "No hay token de autenticación",
-    };
+    return { isAuthenticated: !!hasToken, error: null };
   },
 
   // Obtener información del usuario autenticado
