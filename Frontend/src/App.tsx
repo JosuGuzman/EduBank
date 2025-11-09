@@ -17,8 +17,8 @@ import Register from './pages/Register'
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth()
 
-   console.log("isAuthenticated", isAuthenticated)
-  
+  console.log("isAuthenticated", isAuthenticated)
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -42,18 +42,18 @@ function App() {
       <AuthProvider>
         <div className="min-h-screen bg-gray-50">
           <Navbar />
-          <div className="container mx-auto px-4 py-8">
+          <div>
             <Routes>
               <Route path="/login" element={<Login />} />
-              
-              
+
+
               {/* Rutas protegidas */}
               <Route path="/" element={
                 <PrivateRoute>
                   <Navigate to="/dashboard" replace />
                 </PrivateRoute>
               } />
-              
+
               <Route path="/register" element={<Register />} />
 
               <Route path="/dashboard" element={
@@ -61,43 +61,43 @@ function App() {
                   <Dashboard />
                 </PrivateRoute>
               } />
-              
+
               <Route path="/usuarios" element={
                 <PrivateRoute>
                   <UsuariosPage />
                 </PrivateRoute>
               } />
-              
+
               <Route path="/cuentas" element={
                 <PrivateRoute>
                   <CuentasPage />
                 </PrivateRoute>
               } />
-              
+
               <Route path="/transacciones" element={
                 <PrivateRoute>
                   <TransaccionesPage />
                 </PrivateRoute>
               } />
-              
+
               <Route path="/tarjetas" element={
                 <PrivateRoute>
                   <TarjetasPage />
                 </PrivateRoute>
               } />
-              
+
               <Route path="/prestamos" element={
                 <PrivateRoute>
                   <PrestamosPage />
                 </PrivateRoute>
               } />
-              
+
               <Route path="/sucursales" element={
                 <PrivateRoute>
                   <SucursalesPage />
                 </PrivateRoute>
               } />
-              
+
               {/* Redirección para rutas no encontradas */}
               <Route path="*" element={<Navigate to="/dashboard" replace />} />
             </Routes>
