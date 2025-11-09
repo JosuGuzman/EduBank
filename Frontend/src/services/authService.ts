@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
-const API_URL = "http://localhost:3000"; // Ajusta la URL según tu backend
+const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
 
 const api = axios.create({
   baseURL: API_URL,

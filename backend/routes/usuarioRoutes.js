@@ -14,5 +14,6 @@ router.get("/", verificarToken, usuarioController.listar);
 router.get("/:id", verificarToken, usuarioController.getId);
 router.put("/:id", verificarToken, usuarioController.put);
 router.delete("/:id", verificarToken, usuarioController.delete);
+router.post("/logout", verificarToken, usuarioController.logout)
 
 export default router;

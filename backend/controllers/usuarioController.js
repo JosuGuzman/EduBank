@@ -44,7 +44,7 @@ export const usuarioController = {
         })
         .status(200)
         .json({
-          message: "Register exitoso"
+          message: "Register exitoso",
         });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -54,7 +54,7 @@ export const usuarioController = {
     try {
       const id = req.params.id;
       const usuario = await usuarioRepository.put(id, req.body);
-      
+
       return res.status(200).json(usuario);
     } catch (error) {
       let errores = {};
@@ -77,14 +77,14 @@ export const usuarioController = {
       res.status(500).json({ error: error.message });
     }
   },
-  
+
   getCurrentUser: async (req, res) => {
     try {
       // El middleware de autenticación ya verificó el token y adjuntó el usuario a req.user
       if (!req.user) {
-        return res.status(401).json({ error: 'No autorizado' });
+        return res.status(401).json({ error: "No autorizado" });
       }
-      
+
       // Obtener la información completa del usuario
       const usuario = await usuarioRepository.getId(req.user.id_usuario);
       res.status(200).json(usuario);
@@ -116,6 +116,20 @@ export const usuarioController = {
         });
     } catch (error) {
       res.status(500).json({ error: error.message });
+    }
+  },
+  logout: async (req, res) => {
+    try {
+      res.clearCookie("access_token", {
+        path: "/", 
+        httpOnly: true, 
+        sameSite: "strict",
+      });
+
+      return res.status(200).json({ message: "Sesión cerrada correctamente" });
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      return res.status(500).json({ error: "Error al cerrar sesión" });
     }
   },
 };

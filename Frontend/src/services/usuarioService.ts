@@ -16,12 +16,7 @@ export interface Usuario {
   Email: string;
   Telefono: string;
   Direccion: string;
-  Rol: RolUsuario;
-  FechaAlta: string;
-  Activo: boolean;
   IdSucursal?: number;
-  FechaNacimiento?: string;
-  Genero?: string;
 }
 
 export interface LoginData {
