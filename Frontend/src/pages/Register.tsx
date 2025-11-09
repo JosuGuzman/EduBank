@@ -40,18 +40,7 @@ const Register = () => {
             const response = await authService.register(registerData);
 
       if (response.error) {
-        // 🔥 Manejo personalizado de errores comunes
-        let customMessage = response.error;
-
-        if (response.error.toLowerCase().includes("dni")) {
-          customMessage = "El DNI ya se encuentra registrado en el sistema.";
-        } else if (response.error.toLowerCase().includes("email")) {
-          customMessage = "El correo electrónico ya está en uso.";
-        } else if (response.error.toLowerCase().includes("telefono")) {
-          customMessage = "El número de teléfono ya está registrado.";
-        }
-
-        setError(customMessage);
+        setError(response.error);
       } else {
         navigate('/dashboard', {
           state: { success: '¡Registro exitoso! Por favor inicia sesión.' },

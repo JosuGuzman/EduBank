@@ -55,7 +55,7 @@ export const authService = {
     } catch (error: any) {
       return {
         data: null,
-        error: error.response?.data?.message || "Error al registrarse sesión",
+        error: error.response?.data?.error || "Error al registrarse sesión",
       };
     }
   },
