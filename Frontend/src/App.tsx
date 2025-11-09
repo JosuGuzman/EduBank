@@ -11,6 +11,7 @@ import SucursalesPage from './pages/SucursalesPage'
 import Login from './pages/Login'
 import Navbar from './components/Navbar'
 import type { JSX } from 'react'
+import Register from './pages/Register'
 
 // Componente para proteger rutas privadas
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
@@ -26,9 +27,9 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     )
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
-  }
+  // if (!isAuthenticated) {
+  //   return <Navigate to="/login" replace />
+  // }
 
 
 
@@ -45,6 +46,7 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               
+              
               {/* Rutas protegidas */}
               <Route path="/" element={
                 <PrivateRoute>
@@ -52,6 +54,8 @@ function App() {
                 </PrivateRoute>
               } />
               
+              <Route path="/register" element={<Register />} />
+
               <Route path="/dashboard" element={
                 <PrivateRoute>
                   <Dashboard />

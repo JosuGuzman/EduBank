@@ -8,7 +8,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-interface RegisterData{
+export interface RegisterData{
   Email: string,
   Nombre: string,
   DNI: string,
@@ -43,8 +43,7 @@ export const authService = {
       };
     }
   },
-    // Iniciar sesión
-  Register: async ( Data:RegisterData) => {
+  register: async ( Data:RegisterData) => {
     try {
       console.log("si te registraste guacho");
       const response = await api.post("usuarios/Register")

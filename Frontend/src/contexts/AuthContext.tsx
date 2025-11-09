@@ -24,14 +24,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { isAuthenticated: isAuth } = await authService.checkAuth();
-        console.log("isAuth", isAuth)
+        // const { isAuthenticated: isAuth } = await authService.checkAuth();
+        // console.log("isAuth", isAuth)
         // setIsAuthenticated(isAuth);
 
         // Redirigir a login si no está autenticado y no está en la página de login
-        if (!isAuthenticated && !location.pathname.includes('login')) {
-          navigate('/login');
-        }
+        // if (!isAuthenticated && !location.pathname.includes('login')) {
+        //   navigate('/login');
+        // }
 
         // Redirigir al dashboard si está autenticado y está en la página de login
         if (isAuthenticated && location.pathname.includes('login')) {
