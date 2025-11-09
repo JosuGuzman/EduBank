@@ -4,7 +4,7 @@ import { Plus } from 'lucide-react';
 import { Button } from '../components/UI/Button';
 import { Card } from '../components/UI/Card';
 import { Table } from '../components/UI/Table';
-import { prestamoService, type Prestamo, type EstadoPrestamo } from '../services/prestamoService';
+import { prestamoService, type Prestamo} from '../services/prestamoService';
 import { usuarioService, type Usuario } from '../services/usuarioService';
 
 interface PrestamoConUsuario extends Omit<Prestamo, 'IdUsuario' | 'FechaSolicitud' | 'FechaAprobacion' | 'FechaInicio' | 'FechaFin'> {
@@ -16,7 +16,7 @@ const PrestamosPage = () => {
     const [prestamos, setPrestamos] = useState<PrestamoConUsuario[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [usuarios, setUsuarios] = useState<Record<number, Usuario>>({});
+    // const [usuarios, setUsuarios] = useState<Record<number, Usuario>>({});
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,7 +33,7 @@ const PrestamosPage = () => {
                     return acc;
                 }, {} as Record<number, Usuario>);
 
-                setUsuarios(usuariosMap);
+                // setUsuarios(usuariosMap);
 
                 // Mapear préstamos para incluir el nombre del usuario
                 const prestamosConUsuario = prestamosData.map(prestamo => ({

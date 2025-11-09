@@ -9,17 +9,17 @@ import { sucursalService, type Sucursal } from '../services/sucursalService';
 const SucursalesPage = () => {
     const [sucursales, setSucursales] = useState<Sucursal[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    // const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchSucursales = async () => {
             try {
                 const data = await sucursalService.getSucursales();
                 setSucursales(data);
-                setError(null);
+                // setError(null);
             } catch (err) {
                 console.error('Error al cargar las sucursales:', err);
-                setError('No se pudieron cargar las sucursales. Por favor, intente nuevamente.');
+                // setError('No se pudieron cargar las sucursales. Por favor, intente nuevamente.');
             } finally {
                 setLoading(false);
             }

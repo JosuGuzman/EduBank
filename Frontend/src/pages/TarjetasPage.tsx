@@ -3,7 +3,7 @@ import { Plus } from 'lucide-react';
 import { Button } from '../components/UI/Button';
 import { Card } from '../components/UI/Card';
 import { Table } from '../components/UI/Table';
-import { tarjetaService, type Tarjeta, type TipoTarjeta, type EstadoTarjeta } from '../services/tarjetaService';
+import { tarjetaService, type Tarjeta, type EstadoTarjeta } from '../services/tarjetaService';
 
 interface TarjetaConMascara extends Omit<Tarjeta, 'NumeroTarjeta' | 'Tipo' | 'Estado'> {
     NumeroTarjeta: string; // Número con máscara

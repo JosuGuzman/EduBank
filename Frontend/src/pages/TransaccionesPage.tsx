@@ -3,7 +3,7 @@ import { Plus } from 'lucide-react';
 import { Button } from '../components/UI/Button';
 import { Card } from '../components/UI/Card';
 import { Table } from '../components/UI/Table';
-import { transaccionService, type Transaccion, type TipoTransaccion, type EstadoTransaccion } from '../services/transaccionService';
+import { transaccionService, type Transaccion, type TipoTransaccion } from '../services/transaccionService';
 
 interface TransaccionConDetalles extends Omit<Transaccion, 'IdCuentaOrigen' | 'IdCuentaDestino'> {
     // Usamos los campos de UsuarioOrigen y UsuarioDestino que ya vienen en la transacción
