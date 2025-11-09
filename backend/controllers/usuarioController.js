@@ -39,9 +39,10 @@ export const usuarioController = {
       return res
         .cookie("access_token", token, {
           httpOnly: true,
-          sameSite: "strict",
+          sameSite: "none",
+          secure: true,
           maxAge: 1000 * 60 * 60,
-          path: "/"
+          path: "/",
         })
         .status(200)
         .json({
@@ -108,7 +109,8 @@ export const usuarioController = {
       return res
         .cookie("access_token", token, {
           httpOnly: true,
-          sameSite: "strict",
+          secure:true,
+          sameSite: "none",
           maxAge: 1000 * 60 * 60,
           path: "/", // Accesible en todo el sitio
         })
