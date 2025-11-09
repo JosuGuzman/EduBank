@@ -109,6 +109,7 @@ export const usuarioController = {
           httpOnly: true,
           sameSite: "strict",
           maxAge: 1000 * 60 * 60,
+          path: "/", // Accesible en todo el sitio
         })
         .status(200)
         .json({
@@ -121,8 +122,8 @@ export const usuarioController = {
   logout: async (req, res) => {
     try {
       res.clearCookie("access_token", {
-        path: "/", 
-        httpOnly: true, 
+        path: "/",
+        httpOnly: true,
         sameSite: "strict",
       });
 
