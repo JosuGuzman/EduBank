@@ -40,7 +40,7 @@ export const usuarioController = {
         .cookie("access_token", token, {
           httpOnly: true,
           secure: false, // local no necesita HTTPS
-          sameSite: "lax", // permite que la cookie funcione en front local
+          sameSite: "none", // permite que la cookie funcione en front local
           maxAge: 1000 * 60 * 60, // 1 hora
           path: "/",
         })
@@ -110,7 +110,7 @@ export const usuarioController = {
         .cookie("access_token", token, {
           httpOnly: true,
           secure: false, // local no necesita HTTPS
-          sameSite: "lax", // permite que la cookie funcione en front local
+          sameSite: "none", // permite que la cookie funcione en front local
           maxAge: 1000 * 60 * 60, // 1 hora
           path: "/",
         })
@@ -127,7 +127,7 @@ export const usuarioController = {
       res.clearCookie("access_token", {
         httpOnly: true,
         secure: false, // local no necesita HTTPS
-        sameSite: "lax", // permite que la cookie funcione en front local
+        sameSite: "none", // permite que la cookie funcione en front local
         maxAge: 1000 * 60 * 60, // 1 hora
         path: "/",
       });
