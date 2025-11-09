@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { data } from "react-router-dom";
 // const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
 const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
 
@@ -43,12 +44,13 @@ export const authService = {
       };
     }
   },
-  register: async ( Data:RegisterData) => {
+  register: async ( data:RegisterData) => {
+    console.log("data",data)
     try {
       console.log("si te registraste guacho");
-      const response = await api.post("usuarios/Register")
+      const response = await api.post("usuarios/register")
       
-      console.log(response);
+      console.log("respoenmse",response);
       return { data: response.data, error: null };
     } catch (error: any) {
       return {

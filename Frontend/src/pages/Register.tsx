@@ -38,10 +38,6 @@ const Register = () => {
             return;
         }
 
-        if (formData.PasswordHash.length < 6) {
-            setError('La contraseña debe tener al menos 6 caracteres');
-            return;
-        }
 
         try {
             setIsLoading(true);
@@ -174,7 +170,7 @@ const Register = () => {
                                 <label htmlFor="IdSucursal" className="block text-sm font-medium text-gray-700 mb-1">
                                     Sucursal *
                                 </label>
-                                <select
+                                <input
                                     id="IdSucursal"
                                     name="IdSucursal"
                                     required
@@ -182,11 +178,10 @@ const Register = () => {
                                     value={formData.IdSucursal}
                                     onChange={(e) => setFormData({ ...formData, IdSucursal: parseInt(e.target.value) })}
                                     disabled={isLoading}
+                                    type='number'
                                 >
-                                    <option value="1">Sucursal Central</option>
-                                    <option value="2">Sucursal Norte</option>
-                                    <option value="3">Sucursal Sur</option>
-                                </select>
+
+                                </input>
                             </div>
 
                             <div>
