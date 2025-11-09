@@ -41,6 +41,7 @@ export const usuarioController = {
           httpOnly: true,
           sameSite: "strict",
           maxAge: 1000 * 60 * 60,
+          path: "/"
         })
         .status(200)
         .json({
