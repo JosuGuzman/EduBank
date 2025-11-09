@@ -39,13 +39,14 @@ const Register = () => {
 
             const response = await authService.register(registerData);
 
-            if (response.error) {
-                setError(response.error);
-            } else {
-                // Redirigir al login después de un registro exitoso
-                navigate('/dashboard', { state: { success: '¡Registro exitoso! Por favor inicia sesión.' } });
-            }
-        } catch (error: any) {
+      if (response.error) {
+        setError(response.error);
+      } else {
+        navigate('/dashboard', {
+          state: { success: '¡Registro exitoso! Por favor inicia sesión.' },
+        });
+      }
+    }  catch (error: any) {
             setError(error.message || 'Error al registrar el usuario');
         } finally {
             setIsLoading(false);
@@ -66,8 +67,11 @@ const Register = () => {
                     </div>
 
                     {error && (
-                        <div className="mt-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-md" role="alert">
-                            <p className="text-sm text-red-700">{error}</p>
+                        <div
+                        className="mt-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-md"
+                        role="alert"
+                        >
+                        <p className="text-sm text-red-700">{error}</p>
                         </div>
                     )}
 

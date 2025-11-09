@@ -48,7 +48,7 @@ export const usuarioController = {
           message: "Register exitoso",
         });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message || "error al crear el usuario" });
     }
   },
   put: async (req, res) => {
