@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
+// const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
+const API_URL = "http://localhost:3000"; // Ajusta la URL según tu backend
 
 const api = axios.create({
   baseURL: API_URL,
@@ -37,7 +38,8 @@ export const authService = {
   logout: async () => {
     try {
       // Limpiar la cookie del token
-      document.cookie = 'access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      document.cookie =
+        "access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
       // Redirigir al login
       window.location.href = "/login";
     } catch (error) {
@@ -54,11 +56,11 @@ export const authService = {
       .split(";")
       .some((c) => c.trim().startsWith("access_token"));
 
-    console.log("hasToken", hasToken)
-      
-    return { 
+    console.log("hasToken", hasToken);
+
+    return {
       isAuthenticated: hasToken,
-      error: hasToken ? null : "No hay token de autenticación"
+      error: hasToken ? null : "No hay token de autenticación",
     };
   },
 
