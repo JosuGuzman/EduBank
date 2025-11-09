@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect} from 'react';
 import type { ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../services/authService';
@@ -21,45 +21,46 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   // Verificar autenticación
-  const checkAuth = useCallback(async (): Promise<boolean> => {
-    try {
-      // const { isAuthenticated: isAuth } = await authService.checkAuth();
-      const isAuth = true;
+  // const checkAuth = useCallback(async (): Promise<boolean> => {
+  //   try {
+  //     const { isAuthenticated: isAuth } = await authService.checkAuth();
       
-      if (isAuth && !user) {
-        // Si está autenticado pero no tenemos los datos del usuario, los obtenemos
-        const { user: userData } = await authService.getCurrentUser();
-        if (userData) {
-          setUser({
-            id_usuario: userData.IdUsuario,
-            email: userData.Email,
-            nivel_acceso: userData.Rol,
-            nombre: userData.Nombre
-          });
-        }
-      }
       
-      setIsAuthenticated(isAuth);
-      return isAuth;
-    } catch (error) {
-      console.error('Error al verificar autenticación:', error);
-      setIsAuthenticated(false);
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  }, [user]);
+  //     if (isAuth && !user) {
+  //       // Si está autenticado pero no tenemos los datos del usuario, los obtenemos
+  //       const { user: userData } = await authService.getCurrentUser();
+  //       if (userData) {
+  //         setUser({
+  //           id_usuario: userData.IdUsuario,
+  //           email: userData.Email,
+  //           nivel_acceso: userData.Rol,
+  //           nombre: userData.Nombre
+  //         });
+  //       }
+  //     }
+      
+  //     setIsAuthenticated(isAuth);
+  //     return isAuth;
+  //   } catch (error) {
+  //     console.error('Error al verificar autenticación:', error);
+  //     setIsAuthenticated(false);
+  //     return false;
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }, [user]);
 
   // Verificar autenticación al cargar la aplicación
   useEffect(() => {
     const verifyAuth = async () => {
-      const isAuth = await checkAuth();
+      // const isAuth = await checkAuth();
+      const isAuth = isAuthenticated;
       
       // Redirigir al dashboard si está autenticado y está en la página de login/register
       if (isAuth && (location.pathname === '/login' || location.pathname === '/register')) {
@@ -74,7 +75,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     verifyAuth();
-  }, [checkAuth, navigate, location.pathname]);
+  }, [ navigate, location.pathname]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -86,15 +87,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (data) {
-        const { user: userData } = await authService.getCurrentUser();
-        if (userData) {
-          setUser({
-            id_usuario: userData.IdUsuario,
-            email: userData.Email,
-            nivel_acceso: userData.Rol,
-            nombre: userData.Nombre
-          });
-        }
+        // const { user: userData } = await authService.getCurrentUser();
+        // if (userData) {
+        //   setUser({
+        //     id_usuario: userData.IdUsuario,
+        //     email: userData.Email,
+        //     nivel_acceso: userData.Rol,
+        //     nombre: userData.Nombre
+        //   });
+        // }
         setIsAuthenticated(true);
         navigate('/dashboard');
       }
@@ -127,7 +128,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     user,
     login,
     logout,
-    checkAuth,
+    // checkAuth,
   };
 
   return (
