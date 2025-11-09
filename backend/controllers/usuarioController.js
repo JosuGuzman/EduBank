@@ -111,11 +111,10 @@ export const usuarioController = {
       return res
         .cookie("access_token", token, {
           httpOnly: true,
-          secure: true,
+          secure: false,
           sameSite: "none",
           maxAge: 1000 * 60 * 60, // 1 hora
           path: "/",
-          domain: "https://edubank-1.onrender.com", // Reemplaza con tu dominio real (con el punto al inicio)
         })
         .status(200)
         .json({
