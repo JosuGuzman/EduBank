@@ -27,9 +27,9 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     )
   }
 
-  // if (!isAuthenticated) {
-  //   return <Navigate to="/login" replace />
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />
+  }
 
 
 

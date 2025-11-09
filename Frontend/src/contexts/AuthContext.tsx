@@ -1,9 +1,14 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../services/authService';
 
-
+type User = {
+  id_usuario: number;
+  email: string;
+  nivel_acceso: string;
+  nombre?: string;
+};
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -17,36 +22,59 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Verificar autenticación
+  const checkAuth = useCallback(async (): Promise<boolean> => {
+    try {
+      // const { isAuthenticated: isAuth } = await authService.checkAuth();
+      const isAuth = true;
+      
+      if (isAuth && !user) {
+        // Si está autenticado pero no tenemos los datos del usuario, los obtenemos
+        const { user: userData } = await authService.getCurrentUser();
+        if (userData) {
+          setUser({
+            id_usuario: userData.IdUsuario,
+            email: userData.Email,
+            nivel_acceso: userData.Rol,
+            nombre: userData.Nombre
+          });
+        }
+      }
+      
+      setIsAuthenticated(isAuth);
+      return isAuth;
+    } catch (error) {
+      console.error('Error al verificar autenticación:', error);
+      setIsAuthenticated(false);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [user]);
+
   // Verificar autenticación al cargar la aplicación
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // const { isAuthenticated: isAuth } = await authService.checkAuth();
-        // console.log("isAuth", isAuth)
-        // setIsAuthenticated(isAuth);
-
-        // Redirigir a login si no está autenticado y no está en la página de login
-        // if (!isAuthenticated && !location.pathname.includes('login')) {
-        //   navigate('/login');
-        // }
-
-        // Redirigir al dashboard si está autenticado y está en la página de login
-        if (isAuthenticated && location.pathname.includes('login')) {
-          navigate('/dashboard');
-        }
-      } catch (error) {
-        console.error('Error al verificar autenticación:', error);
-        setIsAuthenticated(false);
-      } finally {
-        setIsLoading(false);
+    const verifyAuth = async () => {
+      const isAuth = await checkAuth();
+      
+      // Redirigir al dashboard si está autenticado y está en la página de login/register
+      if (isAuth && (location.pathname === '/login' || location.pathname === '/register')) {
+        navigate('/dashboard');
+      }
+      
+      // Redirigir a login si no está autenticado y no está en una ruta pública
+      const publicRoutes = ['/login', '/register', '/'];
+      if (!isAuth && !publicRoutes.includes(location.pathname)) {
+        navigate('/login');
       }
     };
 
-    checkAuth();
-  }, [navigate, location.pathname]);
+    verifyAuth();
+  }, [checkAuth, navigate, location.pathname]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -58,6 +86,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (data) {
+        const { user: userData } = await authService.getCurrentUser();
+        if (userData) {
+          setUser({
+            id_usuario: userData.IdUsuario,
+            email: userData.Email,
+            nivel_acceso: userData.Rol,
+            nombre: userData.Nombre
+          });
+        }
         setIsAuthenticated(true);
         navigate('/dashboard');
       }
@@ -71,23 +108,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
+      setIsLoading(true);
       await authService.logout();
       setIsAuthenticated(false);
+      setUser(null);
       navigate('/login');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  const value = {
+    isAuthenticated,
+    isLoading,
+    user,
+    login,
+    logout,
+    checkAuth,
+  };
+
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated,
-        isLoading,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

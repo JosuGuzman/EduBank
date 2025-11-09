@@ -1,6 +1,5 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { data } from "react-router-dom";
 // const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
 const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
 
