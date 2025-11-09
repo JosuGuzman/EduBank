@@ -46,7 +46,7 @@ export const usuarioRepository = {
   },
   async crear(datos) {
     const nuevoUsuario = usuarioInputSchema.parse(datos);
-    
+
     const existente = await db("Usuario")
       .where("DNI", nuevoUsuario.DNI)
       .orWhere("Email", nuevoUsuario.Email)
@@ -118,7 +118,7 @@ export const usuarioRepository = {
     );
 
     if (!passwordValida) {
-      throw new Error("Las contraseñas no coinciden");
+      throw new Error("La contraseñas no coincide con el del gmail registrado");
     }
 
     return usuario;

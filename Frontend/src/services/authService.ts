@@ -40,7 +40,7 @@ export const authService = {
     } catch (error: any) {
       return {
         data: null,
-        error: error.response?.data?.message || "Error al iniciar sesión",
+        error: error.response?.data?.error || "Error al iniciar sesión",
       };
     }
   },

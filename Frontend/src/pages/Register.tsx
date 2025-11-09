@@ -39,13 +39,13 @@ const Register = () => {
 
             const response = await authService.register(registerData);
 
-      if (response.error) {
-        setError(response.error);
-      } else {
-        navigate('/dashboard', {
-          state: { success: '¡Registro exitoso! Por favor inicia sesión.' },
-        });
-      }
+            if (response.error) {
+                setError(response.error);
+            } else {
+                navigate('/dashboard', {
+                state: { success: '¡Registro exitoso! Por favor inicia sesión.' },
+                });
+            }
     }  catch (error: any) {
             setError(error.message || 'Error al registrar el usuario');
         } finally {

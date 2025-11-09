@@ -11,10 +11,13 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    
     
     try {
-      await login(email, password);
+      const response = await login(email, password);
+      if(response){
+        setError(response)
+      }
       // La redirección se maneja en el AuthProvider
     } catch (err) {
       setError('Credenciales incorrectas. Por favor, inténtalo de nuevo.');

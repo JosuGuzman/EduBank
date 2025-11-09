@@ -8,7 +8,7 @@ import { authService } from '../services/authService';
 type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void | string>;
   logout: () => void;
 };
 
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const { data, error } = await authService.login(email, password);
 
       if (error) {
-        throw new Error(error);
+        return error
       }
 
       if (data) {
