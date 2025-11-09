@@ -39,9 +39,9 @@ export const usuarioController = {
       return res
         .cookie("access_token", token, {
           httpOnly: true,
-          sameSite: "none",
-          secure: true,
-          maxAge: 1000 * 60 * 60,
+          secure: false, // local no necesita HTTPS
+          sameSite: "lax", // permite que la cookie funcione en front local
+          maxAge: 1000 * 60 * 60, // 1 hora
           path: "/",
         })
         .status(200)
@@ -109,10 +109,10 @@ export const usuarioController = {
       return res
         .cookie("access_token", token, {
           httpOnly: true,
-          secure:true,
-          sameSite: "none",
-          maxAge: 1000 * 60 * 60,
-          path: "/", // Accesible en todo el sitio
+          secure: false, // local no necesita HTTPS
+          sameSite: "lax", // permite que la cookie funcione en front local
+          maxAge: 1000 * 60 * 60, // 1 hora
+          path: "/",
         })
         .status(200)
         .json({
@@ -125,9 +125,11 @@ export const usuarioController = {
   logout: async (req, res) => {
     try {
       res.clearCookie("access_token", {
-        path: "/",
         httpOnly: true,
-        sameSite: "strict",
+        secure: false, // local no necesita HTTPS
+        sameSite: "lax", // permite que la cookie funcione en front local
+        maxAge: 1000 * 60 * 60, // 1 hora
+        path: "/",
       });
 
       return res.status(200).json({ message: "Sesión cerrada correctamente" });
