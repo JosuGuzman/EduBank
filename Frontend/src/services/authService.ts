@@ -1,12 +1,22 @@
 import axios from "axios";
 
-// const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
+
 const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
 
 const api = axios.create({
   baseURL: API_URL,
-  withCredentials: true, // Importante para enviar y recibir cookies
+  withCredentials: true,
 });
+
+interface RegisterData{
+  Email: string,
+  Nombre: string,
+  DNI: string,
+  Direccion: string,
+  Telefono: string,
+  IdSucursal: number,
+  PasswordHash:string
+}
 
 export const authService = {
   // Verificar si hay un token en las cookies
@@ -33,22 +43,36 @@ export const authService = {
       };
     }
   },
+    // Iniciar sesión
+  Register: async ( Data:RegisterData) => {
+    try {
+      console.log("si te registraste guacho");
+      const response = await api.post("usuarios/Register")
+      
+      console.log(response);
+      return { data: response.data, error: null };
+    } catch (error: any) {
+      return {
+        data: null,
+        error: error.response?.data?.message || "Error al registrarse sesión",
+      };
+    }
+  },
 
   // Cerrar sesión
   logout: async () => {
     try {
-      // Limpiar la cookie del token
-      document.cookie =
-        "access_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+      // Llamamos al backend para borrar la cookie
+      await api.post("/usuarios/logout");
+
       // Redirigir al login
       window.location.href = "/login";
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
-      // Asegurarse de redirigir incluso si hay un error
+      // Redirigir igual al login aunque falle la petición
       window.location.href = "/login";
     }
   },
-
   // Verificar autenticación
   checkAuth: async () => {
     // Solo verificamos si hay un token en las cookies

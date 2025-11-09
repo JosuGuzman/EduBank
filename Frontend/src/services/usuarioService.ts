@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = "https://edubank-1.onrender.com";
+const API_URL = "http://localhost:3000";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -24,17 +24,7 @@ export interface LoginData {
   PasswordHash: string;
 }
 
-export interface RegisterData {
-  Nombre: string;
-  DNI: string;
-  Email: string;
-  Telefono: string;
-  Direccion: string;
-  PasswordHash: string;
-  FechaNacimiento?: string;
-  Genero?: string;
-  IdSucursal?: number;
-}
+
 
 export const usuarioService = {
   // Obtener todos los usuarios
@@ -59,43 +49,10 @@ export const usuarioService = {
     }
   },
 
-  // Registrar un nuevo usuario
-  register: async (userData: RegisterData): Promise<Usuario> => {
-    try {
-      const response = await api.post('/usuarios/register', {
-        ...userData,
-        Rol: 'cliente', // Por defecto, los nuevos usuarios son clientes
-        FechaAlta: new Date().toISOString(),
-        Activo: true
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error al registrar el usuario:', error);
-      throw error;
-    }
-  },
 
-  // Iniciar sesión
-  login: async (credentials: LoginData): Promise<{ usuario: Usuario; token: string }> => {
-    try {
-      const response = await api.post('/usuarios/login', credentials);
-      // Guardar el token en las cookies automáticamente por withCredentials
-      return response.data;
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-      throw error;
-    }
-  },
 
-  // Cerrar sesión
-  logout: async (): Promise<void> => {
-    try {
-      await api.post('/usuarios/logout');
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-      throw error;
-    }
-  },
+
+
 
   // Actualizar un usuario existente
   updateUsuario: async (id: number, userData: Partial<Usuario>): Promise<Usuario> => {
