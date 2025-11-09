@@ -111,7 +111,7 @@ export const usuarioController = {
       return res
         .cookie("access_token", token, {
           httpOnly: true,
-          secure: false,
+          secure: true,
           sameSite: "none",
           maxAge: 1000 * 60 * 60, // 1 hora
           path: "/",
