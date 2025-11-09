@@ -1,40 +1,36 @@
 import axios from "axios";
-import Cookies from "js-cookie";
-// const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
-const API_URL = "https://edubank-1.onrender.com"; // Ajusta la URL según tu backend
+
+// URL de tu backend (Render)
+const API_URL = "https://edubank-1.onrender.com";
 
 const api = axios.create({
   baseURL: API_URL,
-  withCredentials: true,
+  withCredentials: true, // permite enviar/recibir cookies
 });
 
-export interface RegisterData{
-  Email: string,
-  Nombre: string,
-  DNI: string,
-  Direccion: string,
-  Telefono: string,
-  IdSucursal: number,
-  PasswordHash:string
+export interface RegisterData {
+  Email: string;
+  Nombre: string;
+  DNI: string;
+  Direccion: string;
+  Telefono: string;
+  IdSucursal: number;
+  PasswordHash: string;
 }
 
 export const authService = {
-  // Verificar si hay un token en las cookies
-  isAuthenticated: (): boolean => {
-    return document.cookie
-      .split(";")
-      .some((c) => c.trim().startsWith("access_token="));
-  },
-
-  // Iniciar sesión
+  /**
+   * 🔐 Iniciar sesión
+   * Guarda automáticamente la cookie (HttpOnly) si el backend responde con Set-Cookie
+   */
   login: async (email: string, password: string) => {
     try {
-      console.log("sadasdasdasdasd");
-      const response = await api.post("usuarios/login", {
+      const response = await api.post("/usuarios/login", {
         Email: email,
         PasswordHash: password,
       });
-      console.log(response);
+
+      // No hace falta guardar token manualmente: se almacena como cookie HttpOnly
       return { data: response.data, error: null };
     } catch (error: any) {
       return {
@@ -43,45 +39,52 @@ export const authService = {
       };
     }
   },
-  register: async ( data:RegisterData) => {
-    console.log("data",)
+
+  /**
+   * 📝 Registro de usuario nuevo
+   */
+  register: async (data: RegisterData) => {
     try {
-      console.log("si te registraste guacho");
-      const response = await api.post("usuarios/register",data)
-      
-      console.log("respoenmse",response);
+      const response = await api.post("/usuarios/register", data);
       return { data: response.data, error: null };
     } catch (error: any) {
       return {
         data: null,
-        error: error.response?.data?.error || "Error al registrarse sesión",
+        error: error.response?.data?.error || "Error al registrarse",
       };
     }
   },
 
-  // Cerrar sesión
+  /**
+   * 🚪 Cerrar sesión
+   * Llama al backend para eliminar la cookie
+   */
   logout: async () => {
     try {
-      // Llamamos al backend para borrar la cookie
       await api.post("/usuarios/logout");
-
-      // Redirigir al login
       window.location.href = "/login";
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
-      // Redirigir igual al login aunque falle la petición
       window.location.href = "/login";
     }
   },
-  // Verificar autenticación
+
+  /**
+   * 👀 Verificar si el usuario está autenticado
+   * No se puede leer la cookie HttpOnly con JS, por eso pedimos al backend
+   */
   checkAuth: async () => {
-    // Solo verificamos si hay un token en las cookies
-    const hasToken = Cookies.get("access_token");
-    console.log("hasToken", hasToken);
-    return { isAuthenticated: !!hasToken, error: null };
+    try {
+      const response = await api.get("/usuarios/me"); // El backend valida el token
+      return { isAuthenticated: true, user: response.data };
+    } catch {
+      return { isAuthenticated: false, user: null };
+    }
   },
 
-  // Obtener información del usuario autenticado
+  /**
+   * 👤 Obtener información del usuario actual
+   */
   getCurrentUser: async () => {
     try {
       const response = await api.get("/usuarios/me");
